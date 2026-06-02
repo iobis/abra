@@ -1,0 +1,10 @@
+Package: abra
+Title: OBIS Area-Based Records Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("Silas", "Principe", , "s.principe@unesco.org", role = c("aut", "cre"))
+Description: Pipeline for area based analysis of marine records from OBIS and GBIF.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
