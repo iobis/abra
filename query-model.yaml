@@ -1,0 +1,24 @@
+# Details block
+title: Species on the Abrolhos Region, Brazil
+author: Silas Principe
+creation: 2026-06-10
+last-update: 2026-06-10
+# Query block
+source: speciesgrids
+path: null # leave NULL for using S3; ignored if API
+area: POLYGON ((-41.308594 -21.289374, -46.40625 -23.483401, -48.251953 -25.324167, -46.757813 -26.667096, -38.847656 -22.43134, -41.308594 -21.289374))
+period:
+  startdate: null
+  enddate: null
+depth:
+  startdepth: null
+  enddepth: null
+grid:
+  type: h3
+  resolution: 4
+query:
+  taxonid: 125515
+  scientificname: null
+  nodeid: null
+# Analysis block
+metrics: [records, species]

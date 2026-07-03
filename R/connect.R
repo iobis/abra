@@ -93,10 +93,10 @@ connect_od_s3 <- function() {
     connect("open-data")
 }
 
-sync_spg <- function(path) {
+sync_speciesgrids <- function(path) {
     #TODO
 }
 
-sync_od <- function(path) {
+sync_open_data <- function(path) {
     #TODO
 }
