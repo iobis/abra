@@ -17,4 +17,18 @@ query <- con |>
 data <- query |>
     collect()
 
+summary.abra_data <- function(.data) {
+    unique_taxa <- unique(.data$aphiaID)
+    cat(glue::glue("
+    Number of records: {nrow(.data)}
+    Number of unique taxa: {length(unique_taxa)}
+    "))
+}
 
+summary(data)
+
+samp_years <- sampled_years(data)
+plot_grid(samp_years, metric = "sampled_years", complete = T, target_area = target_area)
+
+n_recs <- n_records(data)
+plot_grid(n_recs, metric = "records", complete = T, target_area = target_area)
