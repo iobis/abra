@@ -41,6 +41,10 @@
         }
     }
     class(d) <- c("abra_data", class(d))
+    attr(d, "gridding") <- list(
+        type = .obj$grid$type,
+        resolution = .obj$grid$resolution
+    )
     return(d)
 }
 
