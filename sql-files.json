@@ -1,0 +1,93 @@
+[
+  {
+    "local_file": ["basic-metrics.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/basic-metrics.sql"],
+    "version": ["0.1 2026-08-01"],
+    "target": ["open-data"],
+    "objective": ["generate basic metrics about the dataset (e.g. number of species, etc)"]
+  },
+  {
+    "local_file": ["basis-of-record.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/basis-of-record.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["contributor-coverage.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/contributor-coverage.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["data-quality.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/data-quality.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["dataset-activity.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/dataset-activity.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["dataset-drop-rates.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/dataset-drop-rates.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["environmental-coverage.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/environmental-coverage.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["extensions.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/extensions.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["node-coverage.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/node-coverage.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["records-per-year.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/records-per-year.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["redlist-summary.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/redlist-summary.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["species-of-concern.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/species-of-concern.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  },
+  {
+    "local_file": ["taxonomic-resolution.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/taxonomic-resolution.sql"],
+    "version": {},
+    "target": {},
+    "objective": {}
+  }
+]
