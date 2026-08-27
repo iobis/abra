@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>obis-widgets example</title>
+<style>
+	body { font-family: system-ui, sans-serif; max-width: 60rem; margin: 2rem auto; padding: 0 1rem; }
+	obis-hexmap, obis-chart { display: block; margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+	<h1>obis-widgets</h1>
+	<p>
+		Uses the demo cube at <code>internal/app/all_data.parquet</code> — generate it first
+		with <code>internal/prepare-parquet.R</code> if it isn't there yet (see the widgets
+		README).
+	</p>
+
+	<h2>Standalone map (built-in controls)</h2>
+	<obis-hexmap
+		id="map"
+		parquet="../../internal/app/all_data.parquet"
+		manifest="../../internal/app/all_data.json"
+		metric="n_records"
+		height="420px"
+	></obis-hexmap>
+
+	<h2>Chart + table driven by the map above (hide-controls, synced via filterchange)</h2>
+	<obis-chart
+		id="chart"
+		kind="bar"
+		parquet="../../internal/app/all_data.parquet"
+		manifest="../../internal/app/all_data.json"
+		metric="n_records"
+		hide-controls
+	></obis-chart>
+	<obis-chart
+		id="table"
+		kind="table"
+		parquet="../../internal/app/all_data.parquet"
+		manifest="../../internal/app/all_data.json"
+		metric="n_records"
+		top-n="20"
+		hide-controls
+	></obis-chart>
+
+	<script type="module" src="../dist/obis-hexmap.js"></script>
+	<script type="module" src="../dist/obis-chart.js"></script>
+	<script type="module">
+		const map = document.getElementById('map');
+		const chart = document.getElementById('chart');
+		const table = document.getElementById('table');
+		map.addEventListener('filterchange', (e) => {
+			chart.filter = e.detail.filter;
+			chart.metric = e.detail.metric;
+			table.filter = e.detail.filter;
+			table.metric = e.detail.metric;
+		});
+	</script>
+</body>
+</html>

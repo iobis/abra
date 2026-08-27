@@ -1,0 +1,25 @@
+{
+	"name": "obis-widgets",
+	"private": true,
+	"version": "0.1.0",
+	"type": "module",
+	"description": "Standalone <obis-hexmap> and <obis-chart> web components for embedding OBIS Parquet-cube dashboards in any website. Framework-free.",
+	"scripts": {
+		"build": "rm -rf dist && npm run build:hexmap && npm run build:chart",
+		"build:hexmap": "WIDGET=hexmap vite build",
+		"build:chart": "WIDGET=chart vite build",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@deck.gl/mapbox": "^9.3.10",
+		"@observablehq/plot": "^0.6.17",
+		"deck.gl": "^9.3.10",
+		"h3-js": "^4.5.0",
+		"hyparquet": "^1.29.2",
+		"maplibre-gl": "^6.6.0"
+	},
+	"devDependencies": {
+		"typescript": "^5.7.0",
+		"vite": "^8.0.0"
+	}
+}

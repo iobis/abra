@@ -3,6 +3,7 @@
 S3method(print,abra_query)
 S3method(print,abra_query_result)
 export(cell_to_polygon)
+export(export_cube)
 export(print_sql)
 export(run_query)
 export(set_area)
