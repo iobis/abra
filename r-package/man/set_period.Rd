@@ -32,7 +32,9 @@ con |> set_period(date_start = "2000-01-01", date_end = "2020-12-31")
 Other query builders: 
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
+\code{\link{set_depth_bands}()},
 \code{\link{set_filters}()},
-\code{\link{set_grid}()}
+\code{\link{set_grid}()},
+\code{\link{set_taxonomic_level}()}
 }
 \concept{query builders}

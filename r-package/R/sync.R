@@ -33,6 +33,7 @@ sync_sql_files <- function(local_folder = "sql", warn = TRUE) {
 
     result <- lapply(manifest, \(x) {
         message("Downloading ", x$local_file)
+        fs::dir_create(dirname(file.path(local_folder, x$local_file)))
         dr <- try(download.file(
             x$remote_file, file.path(local_folder, x$local_file)
         ))

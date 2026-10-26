@@ -14,10 +14,11 @@ default), and reporting on them.
   usage.
 - [`python-package/`](python-package/) - a Python package, planned but not
   yet started.
-- [`sql/`](sql/) - the SQL templates `run_query()` runs, one per metric (e.g.
-  `basic-metrics.sql`, `records-per-year.sql`). Templates can vary by data
-  product (open-data vs. speciesgrids), and are cell/condition-substituted at
-  run time - see the r-package README for details.
+- [`sql/`](sql/) - the SQL templates `run_query()` runs, one per metric and
+  one subfolder per data product: `sql/open-data/` and `sql/speciesgrids/`
+  (e.g. `richness.sql`, `richness-bycell.sql`). Only the metrics that can be
+  computed from a product's columns exist in its folder. Templates are
+  cell/condition-substituted at run time - see the r-package README for details.
 - [`sql-files.json`](sql-files.json) - manifest of the SQL templates
   (source URL, version, target product), used by `sync_sql_files()` to fetch
   a local copy of `sql/`.

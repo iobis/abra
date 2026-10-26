@@ -1,4 +1,4 @@
-all_sql <- list.files("sql")
+all_sql <- list.files("sql", pattern = "\\.sql$", recursive = TRUE)
 
 repo <- "iobis/abra"
 

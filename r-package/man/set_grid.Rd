@@ -37,7 +37,9 @@ con |> set_grid(grid_type = "h3", resolution = 5)
 Other query builders: 
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
+\code{\link{set_depth_bands}()},
 \code{\link{set_filters}()},
-\code{\link{set_period}()}
+\code{\link{set_period}()},
+\code{\link{set_taxonomic_level}()}
 }
 \concept{query builders}

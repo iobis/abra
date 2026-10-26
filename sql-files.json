@@ -1,93 +1,534 @@
 [
   {
-    "local_file": ["basic-metrics.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/basic-metrics.sql"],
-    "version": ["0.1 2026-08-01"],
+    "local_file": ["open-data/cell-sampling-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cell-sampling-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
     "target": ["open-data"],
-    "objective": ["generate basic metrics about the dataset (e.g. number of species, etc)"]
+    "objective": ["number of records and species per cell, to show spatial gaps (by grid cell)"]
   },
   {
-    "local_file": ["basis-of-record.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/basis-of-record.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cell-sampling.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cell-sampling.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number and share of cells with few records (< 10, 100 and 1000), to show spatial gaps (global)"]
   },
   {
-    "local_file": ["contributor-coverage.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/contributor-coverage.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/coordinate-uncertainty-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/coordinate-uncertainty-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["distribution of coordinate uncertainty (meters) and share of records without it (by grid cell)"]
   },
   {
-    "local_file": ["data-quality.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/data-quality.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/coordinate-uncertainty.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/coordinate-uncertainty.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["distribution of coordinate uncertainty (meters) and share of records without it (global)"]
   },
   {
-    "local_file": ["dataset-activity.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/dataset-activity.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record (by grid cell)"]
   },
   {
-    "local_file": ["dataset-drop-rates.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/dataset-drop-rates.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-class-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-class-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per class (by grid cell)"]
   },
   {
-    "local_file": ["environmental-coverage.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/environmental-coverage.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-class.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-class.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per class (global)"]
   },
   {
-    "local_file": ["extensions.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/extensions.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-kingdom-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-kingdom-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per kingdom (by grid cell)"]
   },
   {
-    "local_file": ["node-coverage.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/node-coverage.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-kingdom.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-kingdom.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per kingdom (global)"]
   },
   {
-    "local_file": ["records-per-year.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/records-per-year.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-phylum-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-phylum-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per phylum (by grid cell)"]
   },
   {
-    "local_file": ["redlist-summary.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/redlist-summary.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species-phylum.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species-phylum.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record, per phylum (global)"]
   },
   {
-    "local_file": ["species-of-concern.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/species-of-concern.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/cumulative-species.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/cumulative-species.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cumulative number of species by year of first record (global)"]
   },
   {
-    "local_file": ["taxonomic-resolution.sql"],
-    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/taxonomic-resolution.sql"],
-    "version": {},
-    "target": {},
-    "objective": {}
+    "local_file": ["open-data/depth-bands-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/depth-bands-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["species richness and number of records by depth band (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/depth-bands.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/depth-bands.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["species richness and number of records by depth band (global)"]
+  },
+  {
+    "local_file": ["open-data/depth-coverage-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/depth-coverage-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["records with minimum/maximum depth information (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/depth-coverage.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/depth-coverage.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["records with minimum/maximum depth information (global)"]
+  },
+  {
+    "local_file": ["open-data/discovery-rate-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/discovery-rate-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["new species per year and per 1000 records, to show saturation (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/discovery-rate.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/discovery-rate.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["new species per year and per 1000 records, to show saturation (global)"]
+  },
+  {
+    "local_file": ["open-data/diversity-indices-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/diversity-indices-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["Shannon, Gini-Simpson (1 - sum p^2) and Pielou evenness, using records per species as abundance (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/diversity-indices.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/diversity-indices.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["Shannon, Gini-Simpson (1 - sum p^2) and Pielou evenness, using records per species as abundance (global)"]
+  },
+  {
+    "local_file": ["open-data/extension-coverage-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/extension-coverage-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["share of records with an extendedMeasurementOrFact or DNA extension (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/extension-coverage.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/extension-coverage.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["share of records with an extendedMeasurementOrFact or DNA extension (global)"]
+  },
+  {
+    "local_file": ["open-data/hotspot-overlap-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/hotspot-overlap-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["cells in the top decile of richness and of threatened species, and whether both coincide (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/hotspot-overlap.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/hotspot-overlap.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["overlap between richness hotspots and threatened-species hotspots (top decile of cells) (global)"]
+  },
+  {
+    "local_file": ["open-data/last-seen-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/last-seen-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["first and last year each species was recorded (filter on last_year to flag species not recorded recently) (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/last-seen.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/last-seen.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["first and last year each species was recorded (filter on last_year to flag species not recorded recently) (global)"]
+  },
+  {
+    "local_file": ["open-data/publication-information-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/publication-information-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["publication information metric (PI): unique (cell, observation year, taxon) per publication year (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/publication-information.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/publication-information.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["publication information metric (PI): unique (cell, observation year, taxon) per publication year (aggregated over cells)"]
+  },
+  {
+    "local_file": ["open-data/rarity-records-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/rarity-records-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["share of species with 1 to 5 records (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/rarity-records.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/rarity-records.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["share of species with 1 to 5 records (global)"]
+  },
+  {
+    "local_file": ["open-data/records-by-month-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/records-by-month-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of records (identified to species) per month (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/records-by-month.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/records-by-month.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of records (identified to species) per month (global)"]
+  },
+  {
+    "local_file": ["open-data/records-by-year-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/records-by-year-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of records (identified to species) per year (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/records-by-year.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/records-by-year.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of records (identified to species) per year (global)"]
+  },
+  {
+    "local_file": ["open-data/richness-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/richness-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["richness at species, genus, family, order, class and phylum level, and number of records (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/richness-estimators-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/richness-estimators-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["Chao1 richness estimate, sampling completeness (observed / Chao1) and records per species (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/richness-estimators.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/richness-estimators.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["Chao1 richness estimate, sampling completeness (observed / Chao1) and records per species (global)"]
+  },
+  {
+    "local_file": ["open-data/richness.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/richness.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["richness at species, genus, family, order, class and phylum level, and number of records (global)"]
+  },
+  {
+    "local_file": ["open-data/species-cell-occupancy.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/species-cell-occupancy.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["share of cells in which each species occurs (global)"]
+  },
+  {
+    "local_file": ["open-data/taxon-level-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/taxon-level-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["taxonomic level to which each distinct taxon is resolved (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/taxon-level.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/taxon-level.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["taxonomic level to which each distinct taxon is resolved (global)"]
+  },
+  {
+    "local_file": ["open-data/temporal-gaps-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/temporal-gaps-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["years sampled, first/last year and longest run of consecutive years per cell (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/temporal-gaps.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/temporal-gaps.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of cells by years sampled (1, >= 5, >= 10, > 10) and largest run of consecutive years (global)"]
+  },
+  {
+    "local_file": ["open-data/threatened-species-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/threatened-species-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of threatened species (CR, EN, VU) and their records (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/threatened-species.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/threatened-species.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["number of threatened species (CR, EN, VU) and their records (global)"]
+  },
+  {
+    "local_file": ["open-data/wrims-species-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/wrims-species-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["WRiMS-flagged species (e.g. introduced or invasive) and records over time (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/wrims-species.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/wrims-species.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["WRiMS-flagged species (e.g. introduced or invasive) and records over time (global)"]
+  },
+  {
+    "local_file": ["open-data/year-information-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/year-information-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["year information metric (YI): unique (cell, taxon) per observation year (by grid cell)"]
+  },
+  {
+    "local_file": ["open-data/year-information.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/open-data/year-information.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["open-data"],
+    "objective": ["year information metric (YI): unique (cell, taxon) per observation year (aggregated over cells)"]
+  },
+  {
+    "local_file": ["speciesgrids/cell-sampling-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cell-sampling-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["number of records and species per cell, to show spatial gaps (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/cell-sampling.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cell-sampling.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["number and share of cells with few records (< 10, 100 and 1000), to show spatial gaps (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-class-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-class-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per class (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-class.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-class.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per class (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-kingdom-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-kingdom-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per kingdom (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-kingdom.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-kingdom.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per kingdom (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-phylum-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-phylum-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per phylum (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species-phylum.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species-phylum.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record, per phylum (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/cumulative-species.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/cumulative-species.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cumulative number of species by year of first record (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/discovery-rate-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/discovery-rate-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["new species per year (by first year recorded) and cumulative species, to show saturation (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/discovery-rate.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/discovery-rate.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["new species per year (by first year recorded) and cumulative species, to show saturation (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/diversity-indices-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/diversity-indices-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["Shannon, Gini-Simpson (1 - sum p^2) and Pielou evenness, using records per species as abundance (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/diversity-indices.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/diversity-indices.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["Shannon, Gini-Simpson (1 - sum p^2) and Pielou evenness, using records per species as abundance (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/hotspot-overlap-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/hotspot-overlap-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["cells in the top decile of richness and of threatened species, and whether both coincide (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/hotspot-overlap.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/hotspot-overlap.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["overlap between richness hotspots and threatened-species hotspots (top decile of cells) (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/last-seen-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/last-seen-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["first and last year each species was recorded (filter on last_year to flag species not recorded recently) (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/last-seen.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/last-seen.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["first and last year each species was recorded (filter on last_year to flag species not recorded recently) (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/rarity-records-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/rarity-records-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["share of species with 1 to 5 records (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/rarity-records.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/rarity-records.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["share of species with 1 to 5 records (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/richness-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/richness-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["richness at species, genus, family, order, class and phylum level, and number of records (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/richness-estimators-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/richness-estimators-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["Chao1 richness estimate, sampling completeness (observed / Chao1) and records per species (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/richness-estimators.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/richness-estimators.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["Chao1 richness estimate, sampling completeness (observed / Chao1) and records per species (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/richness.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/richness.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["richness at species, genus, family, order, class and phylum level, and number of records (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/species-cell-occupancy.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/species-cell-occupancy.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["share of cells in which each species occurs (global)"]
+  },
+  {
+    "local_file": ["speciesgrids/threatened-species-bycell.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/threatened-species-bycell.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["number of threatened species (CR, EN, VU) and their records (category is only filled for threatened or extinct species) (by grid cell)"]
+  },
+  {
+    "local_file": ["speciesgrids/threatened-species.sql"],
+    "remote_file": ["https://raw.githubusercontent.com/iobis/abra/refs/heads/main/sql/speciesgrids/threatened-species.sql"],
+    "version": ["0.1 2026-10-14"],
+    "target": ["speciesgrids"],
+    "objective": ["number of threatened species (CR, EN, VU) and their records (category is only filled for threatened or extinct species) (global)"]
   }
 ]

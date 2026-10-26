@@ -21,7 +21,7 @@ set_area <- function(.obj, geom = NULL) {
     if (is.null(geom)) {
         .wm("geom is NULL, and no area was set. Analysis will be global")
     } else {
-        if (inherits(geom, "sf")) {
+        if (inherits(geom, c("sf", "sfc"))) {
             geom <- sf::st_geometry(geom)
             if (length(geom) > 1) geom <- sf::st_union(geom)
             geom <- sf::st_as_text(geom)
@@ -113,16 +113,61 @@ set_depth <- function(.obj, startdepth = NULL, enddepth = NULL) {
     return(.obj)
 }
 
+#' Set the depth bands used by depth-band templates
+#'
+#' Templates with a `-- [start depth band block]` marker (e.g.
+#' `depth-bands.sql`) classify each record into a band of this partition;
+#' without this setter they fall back to the template's own default bands
+#' (0-20, 20-200, 200-1000, 1000+ m). The band of a record is based on its
+#' minimum depth, or its maximum depth when the minimum is missing; records
+#' with no depth are labelled `"Unknown"`. This is independent of
+#' [set_depth()], which filters records.
+#'
+#' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
+#' @param breaks an increasing numeric vector of band limits in meters. The
+#'   last value can be `Inf` for an open-ended deepest band.
+#' @return an `abra_query` object, with the depth bands definer set.
+#' @family query builders
+#' @export
+#' @examples
+#' \dontrun{
+#' con |> set_depth_bands(c(0, 50, 200, 1000, Inf))
+#' }
+set_depth_bands <- function(.obj, breaks = c(0, 20, 200, 1000, Inf)) {
+    .obj <- .make_if_not(.obj)
+
+    if (!is.numeric(breaks) || length(breaks) < 2 || anyNA(breaks) || is.unsorted(breaks, strictly = TRUE)) {
+        .em("{.arg breaks} should be a strictly increasing numeric vector with at least two values")
+    }
+
+    .obj |>
+        .change_abra_obj(definers = list(depth_bands = breaks))
+}
+
 #' Set taxonomic/dataset filters for a query
+#'
+#' Restricts the records to given taxa, datasets, nodes or quality flags.
+#' Taxa can be given at any rank with the rank arguments (`phylum`, `class`,
+#' ...), which are matched against the corresponding column of the data
+#' (e.g. `class = "Anthozoa"` only matches records with `class` equal to
+#' Anthozoa). Several taxon arguments can be combined, and the result is the
+#' *union* of the taxa (`order = "Scleractinia", family = "Posidoniaceae"`
+#' keeps both groups). Dataset, node and flag filters are combined with the
+#' taxa using *and*.
 #'
 #' Not every filter is available for every data product (e.g. `instituteid`
 #' has no equivalent column in the open-data parquet dataset): unsupported
 #' filters are ignored with a warning at [run_query()] time, not here.
 #'
 #' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
-#' @param scientificname the scientific name to filter on, or `NULL`.
+#' @param kingdom,phylum,class,order,family,genus,species character vectors
+#'   of taxon names, matched at that rank, or `NULL`.
+#' @param scientificname scientific names matched at *any* rank, or `NULL`.
+#'   Prefer the rank arguments: a name that exists at several ranks, or a
+#'   higher taxon not stored as a column, is easier to get wrong here.
 #' @param taxonid the taxon identifier (WoRMS AphiaID) to filter on, or
-#'   `NULL`.
+#'   `NULL`. Only records identified exactly to this taxon are matched, not
+#'   its descendants.
 #' @param datasetid the OBIS dataset identifier to filter on, or `NULL`.
 #' @param nodeid the OBIS node identifier to filter on, or `NULL`.
 #' @param instituteid the institute identifier to filter on, or `NULL`.
@@ -133,10 +178,18 @@ set_depth <- function(.obj, startdepth = NULL, enddepth = NULL) {
 #' @export
 #' @examples
 #' \dontrun{
-#' con |> set_filters(taxonid = 125515)
+#' con |> set_filters(order = c("Scleractinia", "Alcyonacea"))
+#' con |> set_filters(class = "Actinopterygii", flags = "NO_DEPTH")
 #' }
 set_filters <- function(
   .obj,
+  kingdom = NULL,
+  phylum = NULL,
+  class = NULL,
+  order = NULL,
+  family = NULL,
+  genus = NULL,
+  species = NULL,
   scientificname = NULL,
   taxonid = NULL,
   datasetid = NULL,
@@ -145,8 +198,17 @@ set_filters <- function(
   flags = NULL
 ) {
     .obj <- .make_if_not(.obj)
-    arg <- c(as.list(environment()))
-    if (is.null(unlist(arg))) {
+    arg <- list(
+        kingdom = kingdom, phylum = phylum, class = class, order = order,
+        family = family, genus = genus, species = species,
+        scientificname = scientificname, taxonid = taxonid, datasetid = datasetid,
+        nodeid = nodeid, instituteid = instituteid, flags = flags
+    )
+    ranks <- arg[c("kingdom", "phylum", "class", "order", "family", "genus", "species")]
+    if (!all(vapply(ranks, \(x) is.null(x) || is.character(x), logical(1)))) {
+        .em("Taxon names should be given as character vectors")
+    }
+    if (all(vapply(arg, is.null, logical(1)))) {
         .wm("No filter was added, ignoring.")
     } else {
         .obj <- .obj |>
@@ -205,6 +267,54 @@ set_grid <- function(.obj, grid_type = "h3", resolution = 3) {
             ))
 
     return(.obj)
+}
+
+#' Set the taxonomic level used by taxon-based templates
+#'
+#' Templates with a `-- [start taxon block]` marker (e.g. the publication and
+#' year information metrics) count unique combinations of cell and taxon at
+#' this rank; without this setter they use their own default (phylum).
+#'
+#' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
+#' @param rank one of `"kingdom"`, `"phylum"`, `"class"`, `"order"`,
+#'   `"family"`, `"genus"` or `"species"`.
+#' @return an `abra_query` object, with the taxonomic level definer set.
+#' @family query builders
+#' @export
+#' @examples
+#' \dontrun{
+#' con |> set_taxonomic_level("family")
+#' }
+set_taxonomic_level <- function(.obj, rank = "phylum") {
+    .obj <- .make_if_not(.obj)
+
+    if (length(rank) > 1) .em("You can only set one target rank")
+    if (is.null(rank) || length(rank) < 1) .em("You should set at least one rank")
+    if (!rank %in% c("kingdom", "phylum", "class", "order", "family", "genus", "species")) {
+        .em("Rank is not valid.")
+    }
+
+    .obj <- .obj |>
+            .change_abra_obj(definers = list(
+                taxonomic_level = rank
+            ))
+
+    return(.obj)
+}
+
+add_dataset_info <- function(.obj, dataset_id = NULL) {
+    if (!DBI::dbExistsTable(.obj$connection, "dataset_info")) {
+        cli::cli_alert_info("Creating table `dataset_info` with dataset metadata from OBIS, this can take some minutes")
+        di <- try(robis::dataset(datasetid = dataset_id))
+        if (inherits(di, "try-error")) .em("OBIS API failed. Try again.")
+        DBI::dbCreateTable(.obj$connection, "dataset_info", di[,c(
+            "id", "url", "archive", "published", "created", "updated", "core",
+            "extent", "intellectualrights", "title", "citation", "node_id", "node_name"
+        )])
+    } else {
+        cli::cli_alert_info("Table already exists.")
+    }
+    return (.obj)
 }
 
 # .update_class <- function(.obj, new_class) {

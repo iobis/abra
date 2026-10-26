@@ -47,7 +47,7 @@
 
 # Native H3 resolution of the speciesgrids dataset - the finest resolution
 # it can be queried at; coarser resolutions aggregate via h3_cell_to_parent().
-.speciesgrids_h3_resolution <- 6L
+.speciesgrids_h3_resolution <- 7L
 
 #' Build the SELECT-list expression for a query's cell/grid column
 #'
@@ -71,6 +71,35 @@
     } else {
         .em("type not recognized for building h3 query")
     }
+}
+
+# Ranks that can be filtered with set_filters()
+.filter_ranks <- c("kingdom", "phylum", "class", "order", "family", "genus", "species")
+
+# OR-combined taxon conditions from a `filters` definer: the rank filters, the
+# any-rank `scientificname` and the `taxonid`. `rank_prefix` is "interpreted." for the
+# open-data and "" for speciesgrids (whose columns are not nested); `id_field` is the
+# AphiaID column. Returns a single parenthesised string, or NULL if no taxon filter is set.
+.taxon_conditions <- function(filters, rank_prefix, id_field, ds_type) {
+    conds <- c()
+    for (r in .filter_ranks) {
+        if (!is.null(filters[[r]])) {
+            conds <- c(conds, robisdb:::.sql_in(paste0(rank_prefix, '"', r, '"'), filters[[r]]))
+        }
+    }
+    if (!is.null(filters$scientificname)) {
+        if (ds_type == "open-data") {
+            conds <- c(conds, robisdb:::.sql_taxon_match(filters$scientificname))
+        } else {
+            conds <- c(conds, vapply(.filter_ranks, \(r) robisdb:::.sql_in(paste0('"', r, '"'), filters$scientificname), character(1)))
+        }
+    }
+    if (!is.null(filters$taxonid)) {
+        if (!is.numeric(filters$taxonid)) .em("{.arg taxonid} should be numeric (AphiaID)")
+        conds <- c(conds, robisdb:::.sql_in(id_field, filters$taxonid))
+    }
+    if (length(conds) == 0) return(NULL)
+    paste0("(", paste(conds, collapse = " or "), ")")
 }
 
 #' Build the WHERE-clause conditions for a query
@@ -99,8 +128,6 @@
         }
 
         where_q <- robisdb:::.sql_common_filters(
-            scientificname = filters$scientificname,
-            taxonid = filters$taxonid,
             datasetid = filters$datasetid,
             nodeid = filters$nodeid,
             startdate = period$date_start,
@@ -110,6 +137,7 @@
             geometry = area,
             flags = filters$flags
         )
+        where_q <- c(where_q, .taxon_conditions(filters, "interpreted.", "interpreted.aphiaid", ds_type))
 
         paste(c("dropped is not true and absence is not true", where_q), collapse = " and ")
     } else if (ds_type == "speciesgrids") {
@@ -125,25 +153,54 @@
             .wm("Date/period filtering is not available in speciesgrids (only {.field min_year}/{.field max_year} are stored); ignoring")
         }
 
-        where_q <- c()
-        if (!is.null(filters$taxonid)) {
-            where_q <- c(where_q, robisdb:::.sql_in("AphiaID", filters$taxonid))
-        }
-        if (!is.null(filters$scientificname)) {
-            rank_fields <- c("species", "genus", "family", "order", "class", "phylum", "kingdom")
-            conds <- vapply(rank_fields, robisdb:::.sql_in, character(1), values = filters$scientificname)
-            where_q <- c(where_q, paste0("(", paste(conds, collapse = " or "), ")"))
-        }
+        where_q <- c(.taxon_conditions(filters, "", "AphiaID", ds_type))
         if (!is.null(area)) {
-            where_q <- c(where_q, glue::glue(
-                "list_contains(h3_polygon_wkt_to_cells_string({robisdb:::.sql_quote(area)}, {.speciesgrids_h3_resolution}), cell)"
-            ))
+            # h3_polygon_wkt_to_cells_string() returns nothing for MULTIPOLYGONs, so the
+            # area is split into its polygons and the cell lists are concatenated
+            parts <- sf::st_as_text(sf::st_cast(sf::st_as_sfc(area), "POLYGON"))
+            cell_lists <- paste0(
+                "h3_polygon_wkt_to_cells_string(", vapply(parts, robisdb:::.sql_quote, character(1)),
+                ", ", .speciesgrids_h3_resolution, ")",
+                collapse = ", "
+            )
+            where_q <- c(where_q, paste0("list_contains(flatten([", cell_lists, "]), cell)"))
         }
 
         if (length(where_q) > 0) paste(where_q, collapse = " and ") else "true"
     } else {
         .em("type not recognized for building filter query")
     }
+}
+
+# SQL CASE expression classifying `depth_m` into the bands delimited by
+# `breaks` (see set_depth_bands()), as a `depth_band` column.
+.build_depth_band_query <- function(breaks) {
+    n <- length(breaks)
+    fmt <- function(x) format(x, scientific = FALSE, trim = TRUE)
+    whens <- c(
+        "when depth_m is null then 'Unknown'",
+        sprintf("when depth_m < %s then '<%s'", fmt(breaks[1]), fmt(breaks[1]))
+    )
+    for (i in seq_len(n - 1)) {
+        if (is.infinite(breaks[i + 1])) {
+            whens <- c(whens, sprintf("when depth_m >= %s then '%s+'", fmt(breaks[i]), fmt(breaks[i])))
+        } else {
+            whens <- c(whens, sprintf(
+                "when depth_m >= %s and depth_m < %s then '%s-%s'",
+                fmt(breaks[i]), fmt(breaks[i + 1]), fmt(breaks[i]), fmt(breaks[i + 1])
+            ))
+        }
+    }
+    last <- if (is.finite(breaks[n])) sprintf("else '%s+'", fmt(breaks[n])) else NULL
+    paste(c("case", whens, last, "end as depth_band"), collapse = "\n")
+}
+
+# Replace the lines of `sq` between the `-- [start <name>]` and
+# `-- [end <name>]` markers (inclusive) with `new`, whatever their lengths.
+.replace_block <- function(sq, name, new) {
+    start <- grep(paste("start", name), sq)[1]
+    end <- grep(paste("end", name), sq)[1]
+    c(sq[seq_len(start - 1)], new, sq[seq_len(length(sq) - end) + end])
 }
 
 #' Build the full SQL for a query, with all `set_*()` substitutions applied
@@ -155,14 +212,12 @@
 #' @return the substituted SQL template, as a character vector (one element
 #'   per line).
 #' @noRd
-.build_query_sql <- function(abra_query, sql_file, sql_folder = NULL) {
+.build_query_sql <- function(abra_query, sql_file, sql_folder = NULL, precomputed = .active_precomputed(abra_query)) {
     ds_type <- .check_ds_type(abra_query)
 
     if (ds_type == "obistherm") {
         .em("`obistherm` is not supported by {.fn run_query} yet")
-    } else if (ds_type == "speciesgrids") {
-        .em("`speciesgrids` is not supported by {.fn run_query} yet")
-    } else if (ds_type != "open-data") {
+    } else if (!ds_type %in% c("open-data", "speciesgrids")) {
         .em("Connection type not recognized.")
     }
 
@@ -170,15 +225,23 @@
     if (identical(definers$grid, NA)) {
         .em("A grid should be set with {.fn set_grid} before running a query")
     }
+    if (ds_type == "speciesgrids" && definers$resolution > .speciesgrids_h3_resolution) {
+        .em("speciesgrids is pre-aggregated at H3 resolution {.speciesgrids_h3_resolution}; the grid resolution cannot be finer than that")
+    }
 
     if (is.null(sql_folder)) {
         sql_folder <- "sql"
     }
-    if (!dir.exists(sql_folder) || length(list.files(sql_folder, pattern = ".sql")) < 1) {
+    # templates live in one subfolder per data product (sql/open-data, sql/speciesgrids);
+    # a folder holding the .sql files directly is also accepted
+    if (dir.exists(file.path(sql_folder, ds_type))) {
+        sql_folder <- file.path(sql_folder, ds_type)
+    }
+    if (!dir.exists(sql_folder) || length(list.files(sql_folder, pattern = "\\.sql$")) < 1) {
         .em("Folder {.path {sql_folder}} does not exist or is empty.")
     }
 
-    sql_folder_content <- list.files(sql_folder, pattern = ".sql")
+    sql_folder_content <- list.files(sql_folder, pattern = "\\.sql$")
 
     sql_folder_files <- gsub("\\.sql", "", sql_folder_content)
 
@@ -203,7 +266,7 @@
                 .build_h3_query(ds_type, cell_resolution),
                 "-- [end cell block]"
             )
-            sq[grep("start cell block", sq):grep("end cell block", sq)] <- cell_block
+            sq <- .replace_block(sq, "cell block", cell_block)
         } else if (cell_type == "a5") {
             # TODO!!!
             cell_block <- c(
@@ -213,7 +276,7 @@
                 ),
                 "-- [end cell block]"
             )
-            sq[grep("start cell block", sq):grep("end cell block", sq)] <- cell_block
+            sq <- .replace_block(sq, "cell block", cell_block)
         } else if (cell_type == "geoHash") {
             .em("Cell type not implemented yet")
         } else {
@@ -221,10 +284,32 @@
         }
     }
 
-    conditions <- .build_filter_query(ds_type, filters, period, depth, area)
-    sq[grep("start conditions", sq):grep("end conditions", sq)] <- c(
+    if (any(grepl("start taxon block", sq)) && !identical(definers$taxonomic_level, NA)) {
+        sq <- .replace_block(sq, "taxon block", c(
+            "-- [start taxon block]",
+            paste0("interpreted.", definers$taxonomic_level, " as taxon,"),
+            "-- [end taxon block]"
+        ))
+    }
+
+    if (any(grepl("start depth band block", sq)) && !identical(definers$depth_bands, NA)) {
+        sq <- .replace_block(sq, "depth band block", c(
+            "-- [start depth band block]",
+            .build_depth_band_query(definers$depth_bands),
+            "-- [end depth band block]"
+        ))
+    }
+
+    if (is.null(precomputed)) {
+        conditions <- .build_filter_query(ds_type, filters, period, depth, area)
+    } else {
+        # area, period, depth and filters were applied by pre_compute(): read the table instead
+        conditions <- "true"
+        sq <- gsub("\\bfrom\\s+obis\\b", paste("from", precomputed), sq, perl = TRUE)
+    }
+    sq <- .replace_block(sq, "conditions", c(
         "-- [start conditions]", conditions, "-- [end conditions]"
-    )
+    ))
 
     sq
 }
@@ -318,9 +403,16 @@
 #'   set_grid(grid_type = "h3", resolution = 5) |>
 #'   print_sql("basic-metrics")
 #' }
-print_sql <- function(abra_query, sql_file, sql_folder = "sql", drop_comments = TRUE) {
+print_sql <- function(abra_query, sql_file, sql_folder = "sql/open-data", drop_comments = TRUE, long_geom = FALSE) {
     if (!.is_abra_query(abra_query)) {
         .em("{.arg abra_query} should be an `abra_query` object; build one with the `set_*` functions")
+    }
+
+    if (!long_geom) {
+        area <- attr(abra_query, "abra_query")$definers$area
+        if (is.character(area) && nchar(area) > 30) {
+            attr(abra_query, "abra_query")$definers$area <- "[big geometry object]"
+        }
     }
 
     sq <- .build_query_sql(abra_query, sql_file, sql_folder)

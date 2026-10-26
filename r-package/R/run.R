@@ -4,18 +4,24 @@
 #' named SQL template's `-- [start cell block]`/`-- [start conditions]`
 #' markers and executes it, returning an `abra_query_result` object.
 #'
-#' Only the `open-data` product is currently supported; `speciesgrids` and
+#' If the query was pre-computed with [pre_compute()], the templates read the
+#' pre-computed table and the area, period, depth and filters are not applied
+#' again.
+#'
+#' The `open-data` and `speciesgrids` products are supported (templates are
+#' read from the `open-data`/`speciesgrids` subfolder of `sql_folder`);
 #' `obistherm` connections are rejected.
 #'
 #' @param abra_query an `abra_query` object with at least a grid set (see
 #'   [set_grid()]).
-#' @param sql_file the name (without `.sql` extension) of a SQL template in
-#'   `sql_folder`.
+#' @param sql_templates vector with the name of one or multiple SQL template(s) in
+#'   `sql_folder`. Can be passed with or without ".sql"
 #' @param sql_folder the folder containing the `.sql` templates. Defaults to
 #'   `"sql"` (relative to the working directory).
 #' @param verbose logical. Print the resulting SQL before running it?
 #' @return an `abra_query_result` object (a data frame with the query's
-#'   area/period/depth/filters/grid carried over for provenance).
+#'   area/period/depth/filters/grid carried over for provenance). If multiple
+#'   templates are passed, the result will be a list of abra_query_results
 #' @export
 #' @examples
 #' \dontrun{
@@ -26,7 +32,7 @@
 #' }
 run_query <- function(
     abra_query,
-    sql_file,
+    sql_templates,
     sql_folder = NULL,
     verbose = FALSE
 ) {
@@ -34,17 +40,30 @@ run_query <- function(
         .em("{.arg abra_query} should be an `abra_query` object; build one with the `set_*` functions")
     }
 
+    if (any(grepl("\\.sql", sql_templates))) sql_templates <- gsub("\\.sql", "", grepl("\\.sql", sql_templates))
+
     ds_type <- .check_ds_type(abra_query)
 
     if (ds_type == "obistherm") {
         .em("`obistherm` is not supported by {.fn run_query} yet")
-    } else if (ds_type == "speciesgrids") {
-        .em("`speciesgrids` is not supported by {.fn run_query} yet")
-    } else if (ds_type == "open-data") {
-        .run_query_open_data(abra_query, sql_file, sql_folder, verbose)
+    } else if (ds_type %in% c("open-data", "speciesgrids")) {
+        # checked once here (not per template); NULL if not pre-computed (see pre_compute())
+        precomputed <- .active_precomputed(abra_query)
+        result <- lapply(
+            sql_templates,
+            \(x) .run_query_open_data(abra_query, x, sql_folder, verbose, precomputed)
+        )
     } else {
         .em("Connection type not recognized.")
     }
+    if (length(result) > 1) {
+        class(result) <- c("abra_query_result_list", class(result))
+        names(result) <- tolower(gsub("-", "_", sql_templates))
+    } else {
+        result <- result[[1]]
+    }
+
+    return(result)
 }
 
 #' Run a SQL template against an `open-data` connection
@@ -58,11 +77,12 @@ run_query <- function(
     abra_query,
     sql_file,
     sql_folder = NULL,
-    verbose = FALSE
+    verbose = FALSE,
+    precomputed = NULL
 ) {
     definers <- attr(abra_query, "abra_query")$definers
 
-    sq <- .build_query_sql(abra_query, sql_file, sql_folder)
+    sq <- .build_query_sql(abra_query, sql_file, sql_folder, precomputed)
 
     robisdb::install_h3(abra_query)
 

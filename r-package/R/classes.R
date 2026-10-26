@@ -47,13 +47,16 @@
             area = NA,
             period = NA,
             depth = NA,
+            depth_bands = NA,
+            taxonomic_level = NA,
             filters = NA,
             grid = NA,
             resolution = NA
         ),
         details = list(
             query = NA,
-            version = NA
+            version = NA,
+            precomputed = NA
         )
     )
 }
@@ -158,8 +161,16 @@ print.abra_query <- function(x, ...) {
     if (!identical(definers$filters, NA)) {
         active_filters <- definers$filters[!vapply(definers$filters, is.null, logical(1))]
         if (length(active_filters) > 0) {
-            lines["Filters"] <- paste(names(active_filters), unlist(active_filters), sep = " = ", collapse = ", ")
+            lines["Filters"] <- paste(names(active_filters), vapply(active_filters, paste, character(1), collapse = "/"), sep = " = ", collapse = ", ")
         }
+    }
+
+    if (!identical(definers$taxonomic_level, NA)) {
+        lines["Taxonomic level"] <- definers$taxonomic_level
+    }
+
+    if (is.list(attr(x, "abra_query")$details$precomputed)) {
+        lines["Pre-computed"] <- attr(x, "abra_query")$details$precomputed$table
     }
 
     if (!identical(definers$grid, NA)) {
@@ -213,8 +224,12 @@ print.abra_query_result <- function(x, ...) {
     if (!identical(definers$filters, NA)) {
         active_filters <- definers$filters[!vapply(definers$filters, is.null, logical(1))]
         if (length(active_filters) > 0) {
-            lines["Filters"] <- paste(names(active_filters), unlist(active_filters), sep = " = ", collapse = ", ")
+            lines["Filters"] <- paste(names(active_filters), vapply(active_filters, paste, character(1), collapse = "/"), sep = " = ", collapse = ", ")
         }
+    }
+
+    if (!identical(definers$taxonomic_level, NA)) {
+        lines["Taxonomic level"] <- definers$taxonomic_level
     }
 
     if (!identical(definers$grid, NA)) {
@@ -230,6 +245,74 @@ print.abra_query_result <- function(x, ...) {
     }
 
     NextMethod()
+
+    return(invisible(x))
+}
+
+#' Print an `abra_query_result_list` object
+#'
+#' Prints a summary of the area/period/depth/filters/grid that produced the
+#' result.
+#'
+#' @param x an `abra_query_result_list` object, as returned by [run_query()] with multiple templates.
+#' @param ... further arguments passed to or from other methods (unused).
+#' @return `x`, invisibly.
+#' @export
+print.abra_query_result_list <- function(x, ...) {
+
+    cli::cli_h2(paste("abra_query_result list containing", length(x), "results"))
+    cli::cat_line(paste("Access each result by its name:"))
+    to_print <- names(x)
+    names(to_print) <- rep("*", length(to_print))
+    cli::cli_bullets(to_print)
+    cli::cat_line()
+    cli::cat_line("Query details")
+
+    definers <- attr(x[[1]], "abra_query")$definers
+    lines <- character(0)
+
+    if (!identical(definers$area, NA)) {
+        area <- definers$area
+        if (nchar(area) > 60) area <- paste0(substr(area, 1, 57), "...")
+        lines["Area"] <- area
+    }
+
+    if (!identical(definers$period, NA)) {
+        lines["Period"] <- paste0(
+            "start = ", definers$period$date_start %||% "not set",
+            ", end = ", definers$period$date_end %||% "not set"
+        )
+    }
+
+    if (!identical(definers$depth, NA)) {
+        lines["Depth"] <- paste0(
+            "start = ", definers$depth$startdepth %||% "not set",
+            ", end = ", definers$depth$enddepth %||% "not set"
+        )
+    }
+
+    if (!identical(definers$filters, NA)) {
+        active_filters <- definers$filters[!vapply(definers$filters, is.null, logical(1))]
+        if (length(active_filters) > 0) {
+            lines["Filters"] <- paste(names(active_filters), vapply(active_filters, paste, character(1), collapse = "/"), sep = " = ", collapse = ", ")
+        }
+    }
+
+    if (!identical(definers$taxonomic_level, NA)) {
+        lines["Taxonomic level"] <- definers$taxonomic_level
+    }
+
+    if (!identical(definers$grid, NA)) {
+        lines["Grid"] <- paste0(definers$grid, " (resolution ", definers$resolution, ")")
+    }
+
+    if (length(lines) == 0) {
+        cli::cli_bullets(c("!" = "No parameters set yet"))
+    } else {
+        bullets <- paste0("{.strong ", names(lines), "}: ", cli::col_grey(unname(lines)))
+        names(bullets) <- rep("*", length(bullets))
+        cli::cli_bullets(bullets)
+    }
 
     return(invisible(x))
 }

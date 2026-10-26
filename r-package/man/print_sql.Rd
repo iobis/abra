@@ -4,14 +4,17 @@
 \alias{print_sql}
 \title{Print the SQL a query would run, without executing it}
 \usage{
-print_sql(abra_query, sql_file, sql_folder = "sql", drop_comments = TRUE)
+print_sql(
+  abra_query,
+  sql_file,
+  sql_folder = "sql/open-data",
+  drop_comments = TRUE,
+  long_geom = FALSE
+)
 }
 \arguments{
 \item{abra_query}{an \code{abra_query} object with at least a grid set (see
 \code{\link[=set_grid]{set_grid()}}).}
-
-\item{sql_file}{the name (without \code{.sql} extension) of a SQL template in
-\code{sql_folder}.}
 
 \item{sql_folder}{the folder containing the \code{.sql} templates. Defaults to
 \code{"sql"} (relative to the working directory).}

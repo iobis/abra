@@ -31,8 +31,10 @@ con |> set_depth(startdepth = 0, enddepth = 200)
 \seealso{
 Other query builders: 
 \code{\link{set_area}()},
+\code{\link{set_depth_bands}()},
 \code{\link{set_filters}()},
 \code{\link{set_grid}()},
-\code{\link{set_period}()}
+\code{\link{set_period}()},
+\code{\link{set_taxonomic_level}()}
 }
 \concept{query builders}

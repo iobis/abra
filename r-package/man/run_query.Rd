@@ -4,14 +4,14 @@
 \alias{run_query}
 \title{Run a SQL template against an \code{abra_query}}
 \usage{
-run_query(abra_query, sql_file, sql_folder = NULL, verbose = FALSE)
+run_query(abra_query, sql_templates, sql_folder = NULL, verbose = FALSE)
 }
 \arguments{
 \item{abra_query}{an \code{abra_query} object with at least a grid set (see
 \code{\link[=set_grid]{set_grid()}}).}
 
-\item{sql_file}{the name (without \code{.sql} extension) of a SQL template in
-\code{sql_folder}.}
+\item{sql_templates}{vector with the name of one or multiple SQL template(s) in
+\code{sql_folder}. Can be passed with or without ".sql"}
 
 \item{sql_folder}{the folder containing the \code{.sql} templates. Defaults to
 \code{"sql"} (relative to the working directory).}
@@ -20,7 +20,8 @@ run_query(abra_query, sql_file, sql_folder = NULL, verbose = FALSE)
 }
 \value{
 an \code{abra_query_result} object (a data frame with the query's
-area/period/depth/filters/grid carried over for provenance).
+area/period/depth/filters/grid carried over for provenance). If multiple
+templates are passed, the result will be a list of abra_query_results
 }
 \description{
 Substitutes the \code{abra_query}'s area/period/depth/filters/grid into the
@@ -28,7 +29,8 @@ named SQL template's \verb{-- [start cell block]}/\verb{-- [start conditions]}
 markers and executes it, returning an \code{abra_query_result} object.
 }
 \details{
-Only the \code{open-data} product is currently supported; \code{speciesgrids} and
+The \code{open-data} and \code{speciesgrids} products are supported (templates are
+read from the \code{open-data}/\code{speciesgrids} subfolder of \code{sql_folder});
 \code{obistherm} connections are rejected.
 }
 \examples{
