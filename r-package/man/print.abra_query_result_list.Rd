@@ -7,7 +7,7 @@
 \method{print}{abra_query_result_list}(x, ...)
 }
 \arguments{
-\item{x}{an \code{abra_query_result_list} object, as returned by \code{\link[=run_query]{run_query()}} with multiple templates.}
+\item{x}{an \code{abra_query_result_list} object, as returned by \code{\link[=run_analyses]{run_analyses()}}.}
 
 \item{...}{further arguments passed to or from other methods (unused).}
 }

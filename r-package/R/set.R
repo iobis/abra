@@ -113,12 +113,10 @@ set_depth <- function(.obj, startdepth = NULL, enddepth = NULL) {
     return(.obj)
 }
 
-#' Set the depth bands used by depth-band templates
+#' Set the depth bands used by `depth_bands()`
 #'
-#' Templates with a `-- [start depth band block]` marker (e.g.
-#' `depth-bands.sql`) classify each record into a band of this partition;
-#' without this setter they fall back to the template's own default bands
-#' (0-20, 20-200, 200-1000, 1000+ m). The band of a record is based on its
+#' [depth_bands()] classifies each record into a band of this partition; without
+#' this setter it uses the default bands (0-20, 20-200, 200-1000, 1000+ m). The band of a record is based on its
 #' minimum depth, or its maximum depth when the minimum is missing; records
 #' with no depth are labelled `"Unknown"`. This is independent of
 #' [set_depth()], which filters records.
@@ -157,7 +155,7 @@ set_depth_bands <- function(.obj, breaks = c(0, 20, 200, 1000, Inf)) {
 #'
 #' Not every filter is available for every data product (e.g. `instituteid`
 #' has no equivalent column in the open-data parquet dataset): unsupported
-#' filters are ignored with a warning at [run_query()] time, not here.
+#' filters are ignored with a warning when an analysis runs, not here.
 #'
 #' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
 #' @param kingdom,phylum,class,order,family,genus,species character vectors
@@ -221,8 +219,8 @@ set_filters <- function(
 
 #' Set the aggregation grid for a query
 #'
-#' Every `abra_query` needs a grid set before it can be run with
-#' [run_query()] - this is usually the last `set_*()` call in a chain.
+#' The analyses that work by grid cell (e.g. [records_by_cell()], or any analysis
+#' with `by_cell = TRUE`) need a grid.
 #'
 #' @param .obj a `robisdb_conn` or `abra_query` object. A bare `robisdb_conn`
 #'   (as returned by `robisdb::connect*()`) is promoted to an `abra_query`
@@ -230,7 +228,7 @@ set_filters <- function(
 #'   order.
 #' @param grid_type the grid system to aggregate into: one of `"h3"`,
 #'   `"a5"` or `"geoHash"`. Only `"h3"` is currently implemented end-to-end
-#'   in [run_query()].
+#'   in the analyses.
 #' @param resolution the grid resolution, between 1 and 15 (coarser to
 #'   finer). Some data products cap the finest resolution available (e.g.
 #'   `speciesgrids` is pre-aggregated and cannot be queried finer than its
@@ -269,11 +267,11 @@ set_grid <- function(.obj, grid_type = "h3", resolution = 3) {
     return(.obj)
 }
 
-#' Set the taxonomic level used by taxon-based templates
+#' Set the taxonomic level used by the information metrics
 #'
-#' Templates with a `-- [start taxon block]` marker (e.g. the publication and
-#' year information metrics) count unique combinations of cell and taxon at
-#' this rank; without this setter they use their own default (phylum).
+#' The information metrics ([publication_information()] and
+#' [year_information()]) count unique combinations of cell and taxon at this
+#' rank; without this setter they use phylum.
 #'
 #' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
 #' @param rank one of `"kingdom"`, `"phylum"`, `"class"`, `"order"`,
@@ -302,19 +300,44 @@ set_taxonomic_level <- function(.obj, rank = "phylum") {
     return(.obj)
 }
 
+#' Add the dataset metadata table to the connection
+#'
+#' Downloads the metadata of the OBIS datasets (title, node, publication dates,
+#' ...) with [robis::dataset()] and saves it in a table named `dataset_info` in the
+#' connection. It is needed by the analyses that use the publication date of the
+#' datasets, such as [published_by_year()] and [publication_information()]. Nothing
+#' is done if the table already exists.
+#'
+#' @param .obj a `robisdb_conn` or `abra_query` object.
+#' @param dataset_id optional vector of dataset ids to download, passed to
+#'   [robis::dataset()]. The default is all datasets.
+#' @return `.obj`, invisibly.
+#' @family query builders
+#' @export
+#' @examples
+#' \dontrun{
+#' con |> add_dataset_info()
+#' }
 add_dataset_info <- function(.obj, dataset_id = NULL) {
+    if (!.is_robisdb_conn(.obj)) .em(".obj should be of an robisdb connection")
     if (!DBI::dbExistsTable(.obj$connection, "dataset_info")) {
         cli::cli_alert_info("Creating table `dataset_info` with dataset metadata from OBIS, this can take some minutes")
-        di <- try(robis::dataset(datasetid = dataset_id))
+        di <- try(robis::dataset(datasetid = dataset_id), silent = TRUE)
         if (inherits(di, "try-error")) .em("OBIS API failed. Try again.")
-        DBI::dbCreateTable(.obj$connection, "dataset_info", di[,c(
+        cols <- intersect(c(
             "id", "url", "archive", "published", "created", "updated", "core",
             "extent", "intellectualrights", "title", "citation", "node_id", "node_name"
-        )])
+        ), names(di))
+        di <- as.data.frame(di)[, cols, drop = FALSE]
+        # list columns (e.g. several nodes per dataset) cannot be written as they are
+        for (col in cols) {
+            if (is.list(di[[col]])) di[[col]] <- vapply(di[[col]], paste, character(1), collapse = "|")
+        }
+        DBI::dbWriteTable(.obj$connection, "dataset_info", di)
     } else {
-        cli::cli_alert_info("Table already exists.")
+        cli::cli_alert_info("Table `dataset_info` already exists.")
     }
-    return (.obj)
+    return(invisible(.obj))
 }
 
 # .update_class <- function(.obj, new_class) {

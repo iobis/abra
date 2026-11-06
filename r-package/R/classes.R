@@ -81,7 +81,7 @@
 #'
 #' Merges `definers` and/or `details` into the object's existing
 #' `abra_query` attribute, leaving anything not named in `definers`/`details`
-#' untouched. Used by every `set_*()` function and by [run_query()].
+#' untouched. Used by every `set_*()` function and by the analysis functions.
 #'
 #' @param .obj an `abra_query` or `abra_query_result` object.
 #' @param definers a named list of `definers` entries to update, or `NULL`.
@@ -105,7 +105,7 @@
 
 #' Tag an object as an `abra_query_result`
 #'
-#' Used by [run_query()] to wrap the data returned from the database,
+#' Used by the analysis functions to wrap the data returned from the database,
 #' carrying forward the `definers`/`details` that produced it (see
 #' `.change_abra_obj()`) for provenance and for [print.abra_query_result()].
 #'
@@ -193,7 +193,7 @@ print.abra_query <- function(x, ...) {
 #' Prints a summary of the area/period/depth/filters/grid that produced the
 #' result, followed by the data itself (via [NextMethod()]).
 #'
-#' @param x an `abra_query_result` object, as returned by [run_query()].
+#' @param x an `abra_query_result` object, as returned by an analysis function (e.g. [basic_stats()]).
 #' @param ... further arguments passed to or from other methods (unused).
 #' @return `x`, invisibly.
 #' @export
@@ -254,7 +254,7 @@ print.abra_query_result <- function(x, ...) {
 #' Prints a summary of the area/period/depth/filters/grid that produced the
 #' result.
 #'
-#' @param x an `abra_query_result_list` object, as returned by [run_query()] with multiple templates.
+#' @param x an `abra_query_result_list` object, as returned by [run_analyses()].
 #' @param ... further arguments passed to or from other methods (unused).
 #' @return `x`, invisibly.
 #' @export

@@ -33,8 +33,7 @@
 #' separately (e.g. `count(distinct species) group by <dimensions>`, with no
 #' grid column) and treat the manifest's summed figure as approximate.
 #'
-#' @param data a data frame/tibble to export - typically a [run_query()]
-#'   result, or several combined with `dplyr::bind_rows()` and a label
+#' @param data a data frame/tibble to export - typically the result of an analysis function, or several combined with `dplyr::bind_rows()` and a label
 #'   column (the `type`/`type_value` pattern used for rank breakdowns).
 #' @param path output path for the Parquet file.
 #' @param dimensions character vector of column names in `data` that a
@@ -46,7 +45,7 @@
 #' @param grid a list with `type` and `resolution` describing the grid
 #'   `data` is aggregated to (e.g. `list(type = "h3", resolution = 4)`), or
 #'   `NULL` to auto-detect from `data`'s `abra_query` attribute (only
-#'   possible when `data` is a single, un-mutated [run_query()] result;
+#'   possible when `data` is a single, un-mutated analysis result;
 #'   required for combined/derived data whenever `geo_col` is not `NULL`).
 #' @param chunk_size the Parquet row group size. Smaller values give finer
 #'   pruning granularity at the cost of more per-group overhead; the
@@ -63,7 +62,7 @@
 #' \dontrun{
 #' con |>
 #'   set_grid(grid_type = "h3", resolution = 4) |>
-#'   run_query("basic-metrics") |>
+#'   basic_stats(by = "cell") |>
 #'   export_cube("cube.parquet", dimensions = "basis_of_record", geo_col = NULL)
 #' }
 export_cube <- function(

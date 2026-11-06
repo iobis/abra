@@ -1,0 +1,73 @@
+:root {
+  --primary: #113b9f;
+  --text: #1f2933;
+  --muted: #6b7785;
+  --line: #e3e8ee;
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --radius: 10px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0;
+}
+
+a {
+  color: var(--primary);
+}
+
+code {
+  background: #eef2f7;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Cards and grids used by the sections */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+
+.panel > h3 {
+  font-size: 1rem;
+  margin-bottom: 0.15rem;
+}
+
+.panel > .note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.6rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+}
+
+/* Observable Plot */
+figure {
+  margin: 0;
+}

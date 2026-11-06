@@ -3,7 +3,7 @@ Title: OBIS Area-Based Records Analysis
 Version: 0.0.0.9000
 Authors@R: 
     person("Silas", "Principe", , "s.principe@unesco.org", role = c("aut", "cre"))
-Description: Pipeline for area based analysis of marine records from OBIS and GBIF.
+Description: Area based analysis of marine records from OBIS. Set an area, period, taxa and a grid on a robisdb connection, and run analyses such as basic statistics and information metrics.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -11,5 +11,15 @@ RoxygenNote: 7.3.3
 Imports:
     arrow,
     cli,
+    DBI,
     dplyr,
-    jsonlite
+    glue,
+    jsonlite,
+    robisdb,
+    sf,
+    tibble
+Suggests:
+    robis,
+    terra
+Remotes:
+    iobis/robisdb

@@ -68,41 +68,33 @@ names(eov_queries) <- names(eovs)
 
 eov_queries$corals
 
-# The SQL now reads the pre-computed table, and the filters are not repeated
-print_sql(eov_queries$corals, "richness-bycell")
 
-# Whole-area metrics ----------------------------------------------------------
-# One row (or one series) per group. A name that matches nothing silently gives
-# zero records, so check `richness` first.
 
-global_templates <- c(
-    "richness",
-    "richness-estimators",
-    "cell-sampling",
-    "temporal-gaps",
-    "records-by-year",
-    "cumulative-species",
-    "threatened-species"
-)
+# Whole-area analyses ---------------------------------------------------------
+# run_analyses() runs a set of analyses with default arguments. The queries are
+# already pre-computed, so none of them scans the full dataset again.
+# A name that matches nothing silently gives zero records: check `n_records`.
 
-global <- lapply(eov_queries, run_query, sql_templates = global_templates)
+analyses <- c("basic_stats", "records_by_year", "cumulative_species", "species_list")
 
-global$corals$richness
-global$seagrass$richness
-global$fishes$richness
+global <- lapply(eov_queries, run_analyses, analyses = analyses)
 
-# Combine one metric across EOVs
-combine <- function(results, template) {
+global$corals$basic_stats
+global$seagrass$basic_stats
+global$fishes$basic_stats
+
+# Combine one analysis across the groups
+combine <- function(results, analysis) {
     bind_rows(lapply(names(results), \(eov) {
-        mutate(as.data.frame(results[[eov]][[gsub("-", "_", template)]]), eov = eov)
+        mutate(as.data.frame(results[[eov]][[analysis]]), eov = eov)
     }))
 }
 
 # Sampling effort over time and species accumulation
-records_year <- combine(global, "records-by-year")
-cumulative <- combine(global, "cumulative-species")
+records_year <- combine(global, "records_by_year")
+cumulative <- combine(global, "cumulative_species")
 
-ggplot(records_year, aes(date_year, total, color = eov)) +
+ggplot(records_year, aes(date_year, n_records, color = eov)) +
     geom_line() +
     labs(x = NULL, y = "Records", title = "Records by year") +
     theme_light()
@@ -112,45 +104,33 @@ ggplot(cumulative, aes(first_year, cumulative_species, color = eov)) +
     labs(x = NULL, y = "Cumulative species", title = "Species accumulation") +
     theme_light()
 
-# Metrics by grid cell --------------------------------------------------------
+# Analyses by grid cell -------------------------------------------------------
 
-cell_templates <- c("richness-bycell", "richness-estimators-bycell", "cell-sampling-bycell")
-
-by_cell <- lapply(eov_queries, run_query, sql_templates = cell_templates)
-
-# Join the three metrics of an EOV into one table
-cells_eov <- lapply(by_cell, \(res) {
-    res$richness_bycell |>
-        select(cell, n_species, n_records) |>
-        left_join(select(res$richness_estimators_bycell, cell, chao1, completeness), by = "cell")
-})
-
-# Cells to polygons, using the H3 extension of the connection
-cell_polygons <- function(cells) {
-    DBI::dbWriteTable(con$connection, "eov_cells", data.frame(cell = unique(cells$cell)),
-        temporary = TRUE, overwrite = TRUE)
-    pols <- get_query(con, "
-        select cell, h3_cell_to_boundary_wkt(h3_string_to_h3(cell)) as wkt
-        from eov_cells")
-    left_join(cells, st_as_sf(pols, wkt = "wkt", crs = 4326), by = "cell") |>
-        st_as_sf()
-}
+by_cell <- lapply(eov_queries, records_by_cell)
 
 map_metric <- function(cells, column, title) {
-    ggplot(cell_polygons(cells)) +
+    ggplot(cell_to_polygon(cells, con)) +
         geom_sf(aes(fill = .data[[column]]), color = NA) +
         scale_fill_viridis_c(trans = "log10", name = NULL) +
         labs(title = title) +
         theme_light()
 }
 
-map_metric(cells_eov$corals, "n_species", "Corals: observed species richness")
-map_metric(cells_eov$seagrass, "n_species", "Seagrass: observed species richness")
-map_metric(cells_eov$fishes, "n_species", "Fishes: observed species richness")
+map_metric(by_cell$corals, "n_species", "Corals: observed species richness")
+map_metric(by_cell$seagrass, "n_species", "Seagrass: observed species richness")
+map_metric(by_cell$fishes, "n_species", "Fishes: observed species richness")
 
 # Observed richness follows sampling effort: read it together with the number of
-# records and with the completeness (observed / Chao1)
-map_metric(cells_eov$corals, "n_records", "Corals: number of records")
-map_metric(cells_eov$corals, "completeness", "Corals: sampling completeness")
+# records, and with how unevenly the records are spread over the cells
+map_metric(by_cell$corals, "n_records", "Corals: number of records")
+cell_histogram(eov_queries$corals)
+cell_evenness(eov_queries$corals)
+
+# Information metric ----------------------------------------------------------
+# Needs the dataset publication dates
+con |> add_dataset_info()
+
+year_information(eov_queries$corals)
+publication_information(eov_queries$corals)
 
 disconnect(con)

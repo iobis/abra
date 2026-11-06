@@ -9,25 +9,22 @@ default), and reporting on them.
 
 - [`r-package/`](r-package/) - the `abra` R package: build a query by
   chaining `set_area()`/`set_period()`/`set_depth()`/`set_filters()`/
-  `set_grid()` onto a `robisdb` connection, then run it with `run_query()`.
+  `set_grid()` onto a `robisdb` connection, then run analyses on it
+  (`basic_stats()`, `records_by_year()`, `publication_information()`, ...).
   See [`r-package/README.md`](r-package/README.md) for installation and
   usage.
+- [`dashboard/`](dashboard/) - a static web dashboard (SvelteKit) that shows the
+  results of one analysis for one area, hosted for free on GitHub Pages. See
+  [`dashboard/README.md`](dashboard/README.md).
+- [`quarto/`](quarto/) - a single Quarto document that renders the same results as
+  a PDF report. See [`quarto/README.md`](quarto/README.md).
 - [`python-package/`](python-package/) - a Python package, planned but not
   yet started.
-- [`sql/`](sql/) - the SQL templates `run_query()` runs, one per metric and
-  one subfolder per data product: `sql/open-data/` and `sql/speciesgrids/`
-  (e.g. `richness.sql`, `richness-bycell.sql`). Only the metrics that can be
-  computed from a product's columns exist in its folder. Templates are
-  cell/condition-substituted at run time - see the r-package README for details.
-- [`sql-files.json`](sql-files.json) - manifest of the SQL templates
-  (source URL, version, target product), used by `sync_sql_files()` to fetch
-  a local copy of `sql/`.
-- [`dev/`](dev/) - exploratory scripts used while developing the SQL
-  templates and analyses; not part of the package.
+- [`dev/`](dev/) - exploratory scripts and examples; not part of the package.
 
 ## Getting started
 
-For building and running queries, start with the R package:
+For setting up a query and running analyses, start with the R package:
 
 ```r
 pak::pkg_install("iobis/robisdb")

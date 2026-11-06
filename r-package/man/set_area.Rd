@@ -29,6 +29,8 @@ con |> set_area("POLYGON ((0 0, 1 0, 1 1, 0 0))")
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_depth}()},
 \code{\link{set_depth_bands}()},
 \code{\link{set_filters}()},

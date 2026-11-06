@@ -16,8 +16,7 @@ export_cube(
 )
 }
 \arguments{
-\item{data}{a data frame/tibble to export - typically a \code{\link[=run_query]{run_query()}}
-result, or several combined with \code{dplyr::bind_rows()} and a label
+\item{data}{a data frame/tibble to export - typically the result of an analysis function, or several combined with \code{dplyr::bind_rows()} and a label
 column (the \code{type}/\code{type_value} pattern used for rank breakdowns).}
 
 \item{path}{output path for the Parquet file.}
@@ -33,7 +32,7 @@ H3 index), or \code{NULL} if this cube has no spatial component.}
 \item{grid}{a list with \code{type} and \code{resolution} describing the grid
 \code{data} is aggregated to (e.g. \code{list(type = "h3", resolution = 4)}), or
 \code{NULL} to auto-detect from \code{data}'s \code{abra_query} attribute (only
-possible when \code{data} is a single, un-mutated \code{\link[=run_query]{run_query()}} result;
+possible when \code{data} is a single, un-mutated analysis result;
 required for combined/derived data whenever \code{geo_col} is not \code{NULL}).}
 
 \item{chunk_size}{the Parquet row group size. Smaller values give finer
@@ -89,7 +88,7 @@ grid column) and treat the manifest's summed figure as approximate.
 \dontrun{
 con |>
   set_grid(grid_type = "h3", resolution = 4) |>
-  run_query("basic-metrics") |>
+  basic_stats(by = "cell") |>
   export_cube("cube.parquet", dimensions = "basis_of_record", geo_col = NULL)
 }
 }

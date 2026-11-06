@@ -6,6 +6,13 @@
 \usage{
 set_filters(
   .obj,
+  kingdom = NULL,
+  phylum = NULL,
+  class = NULL,
+  order = NULL,
+  family = NULL,
+  genus = NULL,
+  species = NULL,
   scientificname = NULL,
   taxonid = NULL,
   datasetid = NULL,
@@ -17,10 +24,16 @@ set_filters(
 \arguments{
 \item{.obj}{a \code{robisdb_conn} or \code{abra_query} object (see \code{\link[=set_grid]{set_grid()}}).}
 
-\item{scientificname}{the scientific name to filter on, or \code{NULL}.}
+\item{kingdom, phylum, class, order, family, genus, species}{character vectors
+of taxon names, matched at that rank, or \code{NULL}.}
+
+\item{scientificname}{scientific names matched at \emph{any} rank, or \code{NULL}.
+Prefer the rank arguments: a name that exists at several ranks, or a
+higher taxon not stored as a column, is easier to get wrong here.}
 
 \item{taxonid}{the taxon identifier (WoRMS AphiaID) to filter on, or
-\code{NULL}.}
+\code{NULL}. Only records identified exactly to this taxon are matched, not
+its descendants.}
 
 \item{datasetid}{the OBIS dataset identifier to filter on, or \code{NULL}.}
 
@@ -35,17 +48,30 @@ an \code{abra_query} object, with the filters definer set. If every
 argument is \code{NULL}, \code{.obj} is returned unchanged (with a warning).
 }
 \description{
+Restricts the records to given taxa, datasets, nodes or quality flags.
+Taxa can be given at any rank with the rank arguments (\code{phylum}, \code{class},
+...), which are matched against the corresponding column of the data
+(e.g. \code{class = "Anthozoa"} only matches records with \code{class} equal to
+Anthozoa). Several taxon arguments can be combined, and the result is the
+\emph{union} of the taxa (\verb{order = "Scleractinia", family = "Posidoniaceae"}
+keeps both groups). Dataset, node and flag filters are combined with the
+taxa using \emph{and}.
+}
+\details{
 Not every filter is available for every data product (e.g. \code{instituteid}
 has no equivalent column in the open-data parquet dataset): unsupported
-filters are ignored with a warning at \code{\link[=run_query]{run_query()}} time, not here.
+filters are ignored with a warning when an analysis runs, not here.
 }
 \examples{
 \dontrun{
-con |> set_filters(taxonid = 125515)
+con |> set_filters(order = c("Scleractinia", "Alcyonacea"))
+con |> set_filters(class = "Actinopterygii", flags = "NO_DEPTH")
 }
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
 \code{\link{set_depth_bands}()},

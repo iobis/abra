@@ -1,0 +1,14 @@
+{
+  "title": "Sample area (demo data)",
+  "subtitle": "A small sample of the OBIS records, used to try the dashboard",
+  "area_bbox": [-80, 30, 10, 70],
+  "date_start": "1900-01-01",
+  "date_end": "2025-12-31",
+  "depth": null,
+  "taxa": null,
+  "resolution": 4,
+  "information_rank": "phylum",
+  "generated": "2026-11-04",
+  "abra_version": "0.0.0.9000",
+  "files": ["basic_stats", "cell_histogram", "cells", "cumulative_species_phylum", "cumulative_species", "datasets_by_extension", "depth_bands", "depth_coverage", "publication_information", "published_by_year", "records_by_month", "records_by_year", "species_list", "taxon_level", "year_information"]
+}

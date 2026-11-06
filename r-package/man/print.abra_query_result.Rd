@@ -7,7 +7,7 @@
 \method{print}{abra_query_result}(x, ...)
 }
 \arguments{
-\item{x}{an \code{abra_query_result} object, as returned by \code{\link[=run_query]{run_query()}}.}
+\item{x}{an \code{abra_query_result} object, as returned by an analysis function (e.g. \code{\link[=basic_stats]{basic_stats()}}).}
 
 \item{...}{further arguments passed to or from other methods (unused).}
 }

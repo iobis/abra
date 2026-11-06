@@ -1,0 +1,399 @@
+---
+title: "Marine biodiversity report"
+subtitle: "Records from the Ocean Biodiversity Information System (OBIS)"
+author: "OBIS"
+date: today
+date-format: "D MMMM YYYY"
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 2.2cm
+      y: 2.2cm
+    fontsize: 10pt
+    # Font of the text. If it is not installed, Typst uses its default font.
+    mainfont: "Helvetica Neue"
+    toc: true
+    toc-depth: 2
+    section-numbering: "1.1"
+    fig-format: png
+    fig-dpi: 200
+    columns: 1
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: settings
+#| include: false
+
+# ---- SETTINGS -----------------------------------------------------------------
+# Folder with the results made by `dashboard/prepare-data.R` (relative to this file)
+data_dir <- "../dashboard/static/data"
+
+# Colors
+primary <- "#113b9f"
+secondary <- "#d1495b"
+ramp <- c("#0868ac", "#0ea8bd", "#44d699", "#f6d145", "#dc3220")
+
+# Number of rows of the table of taxa
+top_taxa <- 20
+# --------------------------------------------------------------------------------
+
+library(arrow)
+library(dplyr)
+library(ggplot2)
+library(scales)
+library(knitr)
+library(jsonlite)
+
+theme_set(
+  theme_minimal(base_size = 9) +
+    theme(
+      panel.grid.minor = element_blank(),
+      panel.grid.major.x = element_blank(),
+      axis.title = element_text(colour = "grey35"),
+      plot.title = element_text(face = "bold"),
+      plot.background = element_rect(fill = "white", colour = NA),
+      legend.position = "bottom"
+    )
+)
+
+# Reads a result. Returns NULL if the file does not exist, so a section can be skipped.
+have <- function(name) file.exists(file.path(data_dir, paste0(name, ".parquet")))
+read <- function(name) {
+  if (!have(name)) return(NULL)
+  as.data.frame(read_parquet(file.path(data_dir, paste0(name, ".parquet"))))
+}
+
+meta <- fromJSON(file.path(data_dir, "meta.json"))
+stats <- read("basic_stats")
+
+n <- function(x) format(round(x), big.mark = ",", trim = TRUE)
+```
+
+# Area
+
+```{r}
+#| results: asis
+
+cat("**", meta$title, "**\n\n", sep = "")
+if (!is.null(meta$subtitle)) cat(meta$subtitle, "\n\n")
+
+what <- c(
+  sprintf("Records from %s to %s.", meta$date_start, meta$date_end),
+  if (length(meta$taxa)) {
+    sprintf("Taxa: %s.", paste(names(meta$taxa), sapply(meta$taxa, paste, collapse = ", "), sep = " = ", collapse = "; "))
+  },
+  if (!is.null(meta$resolution)) sprintf("Maps use H3 cells of resolution %s.", meta$resolution),
+  sprintf("Data prepared on %s.", meta$generated)
+)
+cat(paste(what, collapse = " "), "\n")
+```
+
+Counts of records and species show where and when people sampled, not only where
+species live. Read the maps and curves together with the sampling charts.
+
+# Overview
+
+```{r}
+#| label: overview
+
+if (!is.null(stats)) {
+  s <- stats[1, ]
+  tab <- data.frame(
+    Measure = c("Records", "Species", "Genera", "Families", "Orders", "Classes", "Phyla",
+                "Datasets", "Years covered",
+                "Threatened species (CR, EN, VU)", "Species with a single record"),
+    Value = c(n(s$n_records), n(s$n_species), n(s$n_genus), n(s$n_family), n(s$n_order),
+              n(s$n_class), n(s$n_phylum), n(s$n_datasets),
+              paste0(s$min_year, "–", s$max_year),
+              n(s$n_species_cr + s$n_species_en + s$n_species_vu),
+              paste0(n(s$n_species_single_record), " (", round(100 * s$n_species_single_record / s$n_species), "%)"))
+  )
+  kable(tab, align = c("l", "r"))
+}
+```
+
+# Where the records are
+
+```{r}
+#| label: map
+#| fig-height: 4.2
+
+cells <- read("cells")
+
+if (!is.null(cells)) {
+  world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+
+  # Polygons of the H3 cells if the h3jsr package is available, else the cell centers
+  polygons <- tryCatch({
+    pols <- h3jsr::cell_to_polygon(unique(cells$cell), simple = FALSE)
+    merge(pols, cells, by.x = "h3_address", by.y = "cell")
+  }, error = function(e) NULL)
+
+  plot_map <- function(column, label) {
+    # Log scale: cells with 0 cannot be drawn
+    shown <- filter(cells, .data[[column]] > 0)
+    if (!is.null(polygons)) polygons <- filter(polygons, .data[[column]] > 0)
+    p <- ggplot() +
+      geom_sf(data = world, fill = "#f1f3f6", colour = "#9aa5b1", linewidth = 0.1)
+    if (!is.null(polygons)) {
+      p <- p + geom_sf(data = polygons, aes(fill = .data[[column]]), colour = NA)
+    } else {
+      p <- p + geom_point(data = shown, aes(x, y, colour = .data[[column]]), shape = 15, size = 0.8)
+    }
+    scale <- if (is.null(polygons)) scale_colour_gradientn else scale_fill_gradientn
+    p +
+      scale(colours = ramp, trans = "log10", labels = label_number(scale_cut = cut_short_scale()), name = label) +
+      coord_sf(xlim = range(cells$x) + c(-2, 2), ylim = range(cells$y) + c(-2, 2), expand = FALSE) +
+      theme(legend.position = "right", legend.key.height = unit(1.2, "cm"),
+            panel.background = element_rect(fill = "#e8ecf0", colour = NA))
+  }
+
+  plot_map("n_records", "Records")
+}
+```
+
+```{r}
+#| label: map-species
+#| fig-height: 4.2
+
+if (!is.null(cells)) plot_map("n_species", "Species")
+```
+
+```{r}
+#| label: sampling
+#| fig-height: 2.4
+
+hist <- read("cell_histogram")
+if (!is.null(hist)) {
+  hist$bin <- factor(hist$bin, levels = c("1", "100", "1,000", "10,000", ">10,000"))
+  ggplot(hist, aes(bin, cells)) +
+    geom_col(fill = primary, width = 0.7) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(x = "Records in the cell", y = "Cells", title = "Sampling effort across cells",
+         subtitle = "Number of cells by number of records")
+}
+```
+
+# Through time
+
+```{r}
+#| label: by-year
+#| fig-height: 2.8
+
+by_year <- read("records_by_year")
+if (!is.null(by_year)) {
+  ggplot(by_year, aes(date_year, n_records)) +
+    geom_col(fill = primary, width = 0.9) +
+    scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
+    labs(x = NULL, y = "Records", title = "Records by year")
+}
+```
+
+```{r}
+#| label: by-month
+#| fig-height: 2.6
+
+by_month <- read("records_by_month")
+if (!is.null(by_month)) {
+  ggplot(by_month, aes(month, n_records)) +
+    geom_col(fill = primary, width = 0.75) +
+    scale_x_continuous(breaks = 1:12, labels = month.abb) +
+    scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
+    labs(x = NULL, y = "Records", title = "Records by month",
+         subtitle = "All years together: shows when sampling happens")
+}
+```
+
+```{r}
+#| label: cumulative
+#| fig-height: 3.2
+
+cumulative <- read("cumulative_species")
+if (!is.null(cumulative)) {
+  ggplot(cumulative, aes(first_year, cumulative_species)) +
+    geom_step(colour = primary, linewidth = 0.7) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(x = NULL, y = "Species", title = "Species accumulation",
+         subtitle = "Cumulative number of species by the year of their first record")
+}
+```
+
+```{r}
+#| label: cumulative-phylum
+#| fig-height: 3.2
+
+by_phylum <- read("cumulative_species_phylum")
+if (!is.null(by_phylum)) {
+  top <- by_phylum |>
+    group_by(phylum) |>
+    summarise(total = max(cumulative_species)) |>
+    slice_max(total, n = 6) |>
+    pull(phylum)
+
+  ggplot(filter(by_phylum, phylum %in% top),
+         aes(first_year, cumulative_species, colour = factor(phylum, levels = top))) +
+    geom_step(linewidth = 0.7) +
+    scale_colour_manual(values = c(primary, secondary, "#2a9d8f", "#e9c46a", "#8d5fd3", "#f4a261"), name = NULL) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(x = NULL, y = "Species", title = "Species accumulation by phylum",
+         subtitle = "The six phyla with most species")
+}
+```
+
+# Taxonomy
+
+```{r}
+#| label: taxon-level
+#| fig-height: 2.4
+
+taxon_level <- read("taxon_level")
+if (!is.null(taxon_level)) {
+  taxon_level$higher_level <- factor(taxon_level$higher_level, levels = rev(taxon_level$higher_level))
+  ggplot(taxon_level, aes(total_perc, higher_level)) +
+    geom_col(fill = primary, width = 0.7) +
+    labs(x = "Share of taxa (%)", y = NULL, title = "Taxonomic resolution",
+         subtitle = "Level to which each distinct taxon is identified")
+}
+```
+
+```{r}
+#| label: species-list
+#| results: asis
+
+species <- read("species_list")
+if (!is.null(species)) {
+  top <- head(species, top_taxa)
+  # Records identified only to a higher rank have no species name
+  top$taxon <- ifelse(
+    is.na(top$species),
+    coalesce(top$genus, top$family, top$order, top$class, top$phylum, top$kingdom),
+    paste0("_", top$species, "_")
+  )
+  tab <- data.frame(
+    Taxon = top$taxon,
+    Class = ifelse(is.na(top$class), "", top$class),
+    `Red List` = ifelse(is.na(top$redlist_category), "", top$redlist_category),
+    Records = n(top$n_records),
+    Datasets = n(top$n_datasets),
+    First = top$first_year,
+    Last = top$last_year,
+    check.names = FALSE
+  )
+  cat(sprintf("**The %s most recorded taxa** (of %s)\n\n", top_taxa, n(nrow(species))))
+  kable(tab, align = c("l", "l", "c", "r", "r", "r", "r"))
+}
+```
+
+# Depth
+
+```{r}
+#| label: depth
+#| fig-height: 2.4
+
+coverage <- read("depth_coverage")
+bands <- read("depth_bands")
+
+if (!is.null(coverage)) {
+  coverage$depth_coverage <- factor(coverage$depth_coverage, levels = rev(coverage$depth_coverage[order(coverage$total)]))
+  ggplot(coverage, aes(total_perc, depth_coverage)) +
+    geom_col(fill = primary, width = 0.7) +
+    labs(x = "Share of records (%)", y = NULL, title = "Depth information",
+         subtitle = "Records with a minimum depth, a maximum depth, both or none")
+}
+```
+
+```{r}
+#| label: depth-bands
+#| fig-height: 2.8
+
+if (!is.null(bands)) {
+  bands$depth_band <- factor(bands$depth_band, levels = bands$depth_band)
+  bands |>
+    tidyr::pivot_longer(c(n_records, n_species), names_to = "what", values_to = "value") |>
+    mutate(what = recode(what, n_records = "Records", n_species = "Species")) |>
+    ggplot(aes(depth_band, value, fill = what)) +
+    geom_col(position = "dodge", width = 0.7) +
+    scale_fill_manual(values = c(Records = primary, Species = secondary), name = NULL) +
+    scale_y_sqrt(labels = label_number(scale_cut = cut_short_scale())) +
+    labs(x = "Depth band (m)", y = NULL, title = "Records and species by depth band",
+         subtitle = "Square root scale")
+}
+```
+
+# Datasets
+
+```{r}
+#| label: datasets
+#| fig-height: 2.4
+
+ext <- read("datasets_by_extension")
+if (!is.null(ext)) {
+  ext$type <- factor(ext$type, levels = rev(ext$type[order(ext$total)]))
+  ggplot(ext, aes(total, type)) +
+    geom_col(fill = primary, width = 0.7) +
+    geom_text(aes(label = paste0(round(total_perc), "%")), hjust = -0.2, size = 3, colour = "grey30") +
+    scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+    labs(x = "Datasets", y = NULL, title = "Datasets by data type",
+         subtitle = "eMoF: extended measurements or facts; DNA: DNA derived data")
+}
+```
+
+```{r}
+#| label: published
+#| fig-height: 2.8
+
+published <- read("published_by_year")
+if (!is.null(published)) {
+  ggplot(published, aes(year)) +
+    geom_col(aes(y = n_datasets), fill = primary, width = 0.8) +
+    geom_line(aes(y = cumulative_datasets), colour = secondary, linewidth = 0.8) +
+    scale_y_continuous(breaks = function(x) unique(floor(pretty(x)))) +
+    scale_x_continuous(breaks = function(x) unique(floor(pretty(x)))) +
+    labs(x = NULL, y = "Datasets", title = "Datasets by publication year",
+         subtitle = "Bars: new datasets. Line: cumulative number")
+}
+```
+
+# Information metrics
+
+These metrics count unique combinations instead of records, so a few intensively
+sampled places do not dominate the result.
+
+```{r}
+#| label: year-information
+#| fig-height: 2.8
+
+yi <- read("year_information")
+if (!is.null(yi)) {
+  ggplot(yi, aes(year, i_p)) +
+    geom_area(fill = primary, alpha = 0.15) +
+    geom_line(colour = primary, linewidth = 0.6) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(x = NULL, y = "Combinations", title = "Year information",
+         subtitle = sprintf("Unique combinations of cell and %s in each observation year", meta$information_rank))
+}
+```
+
+```{r}
+#| label: publication-information
+#| fig-height: 2.8
+
+pi <- read("publication_information")
+if (!is.null(pi)) {
+  ggplot(pi, aes(year, i_p)) +
+    geom_col(fill = primary, width = 0.8) +
+    scale_y_continuous(labels = label_comma()) +
+    labs(x = NULL, y = "Combinations", title = "Publication information",
+         subtitle = sprintf("Unique combinations of cell, observation year and %s among the records published each year", meta$information_rank))
+}
+```
+
+# About
+
+Analysis made with the [abra](https://github.com/iobis/abra) R package on the OBIS open
+data. Version of abra: `r meta$abra_version`.

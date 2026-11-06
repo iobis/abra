@@ -2,7 +2,7 @@
 % Please edit documentation in R/set.R
 \name{set_taxonomic_level}
 \alias{set_taxonomic_level}
-\title{Set the taxonomic level used by taxon-based templates}
+\title{Set the taxonomic level used by the information metrics}
 \usage{
 set_taxonomic_level(.obj, rank = "phylum")
 }
@@ -16,9 +16,9 @@ set_taxonomic_level(.obj, rank = "phylum")
 an \code{abra_query} object, with the taxonomic level definer set.
 }
 \description{
-Templates with a \verb{-- [start taxon block]} marker (e.g. the publication and
-year information metrics) count unique combinations of cell and taxon at
-this rank; without this setter they use their own default (phylum).
+The information metrics (\code{\link[=publication_information]{publication_information()}} and
+\code{\link[=year_information]{year_information()}}) count unique combinations of cell and taxon at this
+rank; without this setter they use phylum.
 }
 \examples{
 \dontrun{
@@ -27,6 +27,8 @@ con |> set_taxonomic_level("family")
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
 \code{\link{set_depth_bands}()},

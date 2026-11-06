@@ -30,6 +30,8 @@ con |> set_period(date_start = "2000-01-01", date_end = "2020-12-31")
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
 \code{\link{set_depth_bands}()},

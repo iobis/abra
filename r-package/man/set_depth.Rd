@@ -30,6 +30,8 @@ con |> set_depth(startdepth = 0, enddepth = 200)
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth_bands}()},
 \code{\link{set_filters}()},

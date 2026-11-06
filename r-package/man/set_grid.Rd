@@ -14,7 +14,7 @@ order.}
 
 \item{grid_type}{the grid system to aggregate into: one of \code{"h3"},
 \code{"a5"} or \code{"geoHash"}. Only \code{"h3"} is currently implemented end-to-end
-in \code{\link[=run_query]{run_query()}}.}
+in the analyses.}
 
 \item{resolution}{the grid resolution, between 1 and 15 (coarser to
 finer). Some data products cap the finest resolution available (e.g.
@@ -25,8 +25,8 @@ native resolution).}
 an \code{abra_query} object, with the grid definer set.
 }
 \description{
-Every \code{abra_query} needs a grid set before it can be run with
-\code{\link[=run_query]{run_query()}} - this is usually the last \verb{set_*()} call in a chain.
+The analyses that work by grid cell (e.g. \code{\link[=records_by_cell]{records_by_cell()}}, or any analysis
+with \code{by_cell = TRUE}) need a grid.
 }
 \examples{
 \dontrun{
@@ -35,6 +35,8 @@ con |> set_grid(grid_type = "h3", resolution = 5)
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
 \code{\link{set_depth_bands}()},

@@ -2,7 +2,7 @@
 % Please edit documentation in R/set.R
 \name{set_depth_bands}
 \alias{set_depth_bands}
-\title{Set the depth bands used by depth-band templates}
+\title{Set the depth bands used by \code{depth_bands()}}
 \usage{
 set_depth_bands(.obj, breaks = c(0, 20, 200, 1000, Inf))
 }
@@ -16,10 +16,8 @@ last value can be \code{Inf} for an open-ended deepest band.}
 an \code{abra_query} object, with the depth bands definer set.
 }
 \description{
-Templates with a \verb{-- [start depth band block]} marker (e.g.
-\code{depth-bands.sql}) classify each record into a band of this partition;
-without this setter they fall back to the template's own default bands
-(0-20, 20-200, 200-1000, 1000+ m). The band of a record is based on its
+\code{\link[=depth_bands]{depth_bands()}} classifies each record into a band of this partition; without
+this setter it uses the default bands (0-20, 20-200, 200-1000, 1000+ m). The band of a record is based on its
 minimum depth, or its maximum depth when the minimum is missing; records
 with no depth are labelled \code{"Unknown"}. This is independent of
 \code{\link[=set_depth]{set_depth()}}, which filters records.
@@ -31,6 +29,8 @@ con |> set_depth_bands(c(0, 50, 200, 1000, Inf))
 }
 \seealso{
 Other query builders: 
+\code{\link{add_dataset_info}()},
+\code{\link{pre_compute}()},
 \code{\link{set_area}()},
 \code{\link{set_depth}()},
 \code{\link{set_filters}()},

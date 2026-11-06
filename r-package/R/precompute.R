@@ -2,16 +2,16 @@
 #'
 #' Applies the area, period, depth and filters of the query once, and saves the
 #' matching records in a table (`obis_computed` by default) of the connection.
-#' Queries run afterwards with [run_query()] on the returned object read from
-#' this table instead of the full dataset, and ignore the area, period, depth and
-#' filters (they were already applied). This is much faster when several
-#' templates are run for the same selection, as the full dataset is only scanned
+#' The analysis functions (e.g. [basic_stats()]) run afterwards on the returned
+#' object read from this table instead of the full dataset, and ignore the area,
+#' period, depth and filters (they were already applied). This is much faster when several
+#' analyses are run for the same selection, as the full dataset is only scanned
 #' once.
 #'
 #' The grid, [set_depth_bands()] and [set_taxonomic_level()] are not part of the
 #' pre-computation and can still be changed between runs. If the area, period,
 #' depth or filters of the returned object are changed afterwards, or the table
-#' no longer exists, [run_query()] warns and goes back to the full dataset.
+#' no longer exists, the analysis functions warn and goes back to the full dataset.
 #'
 #' @param abra_query an `abra_query` object, with the area, period, depth and
 #'   filters to apply (see [set_area()], [set_period()], [set_depth()] and
@@ -30,16 +30,11 @@
 #'   set_grid(grid_type = "h3", resolution = 4) |>
 #'   pre_compute()
 #'
-#' run_query(statement, c("richness", "cell-sampling", "records-by-year"))
+#' basic_stats(statement)
+#' records_by_year(statement)
 #' }
 pre_compute <- function(abra_query, table = "obis_computed", overwrite = TRUE) {
-    if (!.is_abra_query(abra_query)) {
-        .em("{.arg abra_query} should be an `abra_query` object; build one with the `set_*` functions")
-    }
-    ds_type <- .check_ds_type(abra_query)
-    if (!ds_type %in% c("open-data", "speciesgrids")) {
-        .em("`pre_compute()` is not supported for {.val {ds_type}} yet")
-    }
+    abra_query <- .as_query(abra_query)
     if (!grepl("^[A-Za-z_][A-Za-z0-9_]*$", table)) {
         .em("{.arg table} should be a plain table name (letters, digits and underscores)")
     }
@@ -48,15 +43,9 @@ pre_compute <- function(abra_query, table = "obis_computed", overwrite = TRUE) {
     }
 
     inputs <- .precompute_inputs(abra_query)
-    conditions <- .build_filter_query(
-        ds_type,
-        if (identical(inputs$filters, NA)) list() else inputs$filters,
-        if (identical(inputs$period, NA)) list() else inputs$period,
-        if (identical(inputs$depth, NA)) list() else inputs$depth,
-        if (identical(inputs$area, NA)) NULL else inputs$area
-    )
+    conditions <- .query_conditions(abra_query)
 
-    robisdb::install_h3(abra_query)
+    .install_h3(abra_query)
 
     cli::cli_alert_info("Pre-computing table {.field {table}}, this scans the full dataset")
     robisdb::send_query(
