@@ -3,3 +3,4 @@ r-package/R/draft
 .DS_Store
 internal/
 widgets/node_modules/
+dataset_info.parquet
