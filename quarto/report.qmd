@@ -319,9 +319,9 @@ if (!is.null(bands)) {
     ggplot(aes(depth_band, value, fill = what)) +
     geom_col(position = "dodge", width = 0.7) +
     scale_fill_manual(values = c(Records = primary, Species = secondary), name = NULL) +
-    scale_y_sqrt(labels = label_number(scale_cut = cut_short_scale())) +
+    scale_y_continuous(labels = label_number(scale_cut = cut_short_scale())) +
     labs(x = "Depth band (m)", y = NULL, title = "Records and species by depth band",
-         subtitle = "Square root scale")
+         subtitle = "Number of records and of species in each depth band")
 }
 ```
 

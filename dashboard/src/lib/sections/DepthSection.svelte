@@ -43,7 +43,7 @@
               height: 240,
               marginLeft: 50,
               x: { label: 'Depth band (m)', domain: rows.map((r) => r.depth_band) },
-              y: { label: 'Records / species', type: 'sqrt', tickFormat: compact, grid: true },
+              y: { label: 'Records / species', tickFormat: compact, grid: true },
               color: { legend: true, domain: ['Records', 'Species'], range: [config.colors.primary, config.colors.secondary] },
               marks: [
                 Plot.barY(rows, Plot.groupX({ y: 'sum' }, { x: 'depth_band', y: 'n_records', fill: () => 'Records', tip: true })),

@@ -82,6 +82,12 @@ set_period <- function(.obj, date_start = NULL, date_end = NULL) {
 
 #' Set the depth range of interest for a query
 #'
+#' Keeps the records whose minimum depth is at least `startdepth` and whose
+#' maximum depth is at most `enddepth`. Records without depth information
+#' do not satisfy the condition and are left out, so setting a depth range
+#' also removes them from every analysis (see [depth_coverage()] for how many
+#' records that is).
+#'
 #' @param .obj a `robisdb_conn` or `abra_query` object (see [set_grid()]).
 #' @param startdepth the minimum depth below the sea surface, in meters, or
 #'   `NULL` to leave it open.
@@ -307,6 +313,10 @@ set_taxonomic_level <- function(.obj, rank = "phylum") {
 #' connection. It is needed by the analyses that use the publication date of the
 #' datasets, such as [published_by_year()] and [publication_information()]. Nothing
 #' is done if the table already exists.
+#'
+#' The table lives in the connection, not on disk: it has to be created again
+#' for each new connection. Calling it with a query that was already
+#' pre-computed (see [pre_compute()]) is fine, as the connection is shared.
 #'
 #' @param .obj a `robisdb_conn` or `abra_query` object.
 #' @param dataset_id optional vector of dataset ids to download, passed to

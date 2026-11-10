@@ -22,6 +22,9 @@ Rscript prepare-data.R
 
 The results are saved in `dashboard/static/data/` (Parquet files and `meta.json`).
 The repository includes demo data, so you can skip this step to try the report.
+`prepare-data.R` needs the [abra](../r-package) and
+[robisdb](https://github.com/iobis/robisdb) packages and a local copy of the OBIS
+open data (`robisdb::sync_opendata()`).
 
 **2. Render.** From this folder:
 
@@ -29,19 +32,21 @@ The repository includes demo data, so you can skip this step to try the report.
 quarto render report.qmd
 ```
 
-This creates `report.pdf`. In RStudio or Positron, use the *Render* button.
+This creates `report.pdf` (not tracked by git). In RStudio or Positron, use the
+*Render* button.
 
 ## What you need
 
 - [Quarto](https://quarto.org/docs/get-started/) 1.4 or newer
-- R with the packages `arrow`, `dplyr`, `ggplot2`, `scales`, `knitr`, `jsonlite`,
-  `tidyr` and `rnaturalearth` (with `rnaturalearthdata`) for the land on the maps
+- R with the packages `arrow`, `dplyr`, `ggplot2`, `scales`, `knitr`, `rmarkdown`,
+  `jsonlite`, `tidyr` and `rnaturalearth` (with `rnaturalearthdata`) for the land on
+  the maps
 - Optional: `h3jsr`. With it, the maps draw the real hexagons; without it, they
   draw the center of each cell.
 
 ```r
-install.packages(c("arrow", "dplyr", "ggplot2", "scales", "knitr", "jsonlite",
-                   "tidyr", "rnaturalearth", "rnaturalearthdata", "h3jsr"))
+install.packages(c("arrow", "dplyr", "ggplot2", "scales", "knitr", "rmarkdown",
+                   "jsonlite", "tidyr", "rnaturalearth", "rnaturalearthdata", "h3jsr"))
 ```
 
 ## Change the report

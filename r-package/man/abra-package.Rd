@@ -16,17 +16,19 @@ period, depth, taxa and grid cell.
 \item Set the options of the query with \code{\link[=set_area]{set_area()}}, \code{\link[=set_period]{set_period()}},
 \code{\link[=set_depth]{set_depth()}}, \code{\link[=set_filters]{set_filters()}} and \code{\link[=set_grid]{set_grid()}} (and
 \code{\link[=set_taxonomic_level]{set_taxonomic_level()}}, \code{\link[=set_depth_bands]{set_depth_bands()}} for some analyses).
-\item Optionally, apply the options once with \code{\link[=pre_compute]{pre_compute()}}.
-\item Run the analyses, one by one or with \code{\link[=run_analyses]{run_analyses()}}.
+\item Run an analysis, or several at once with \code{\link[=run_analyses]{run_analyses()}}.
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{result <- con |>
   set_area(area) |>
   set_period("2000-01-01", "2020-12-31") |>
   set_grid("h3", 4) |>
-  pre_compute() |>
   basic_stats()
 }\if{html}{\out{</div>}}
+
+Every analysis reads the whole open data. \code{\link[=run_analyses]{run_analyses()}} does this only once
+for all the analyses it runs. If you run several analyses by hand on the same
+selection, apply it once with \code{\link[=pre_compute]{pre_compute()}} first (optional).
 }
 
 \section{Analyses}{
@@ -39,8 +41,16 @@ Spatial: \code{\link[=records_by_cell]{records_by_cell()}}, \code{\link[=cell_hi
 \code{\link[=cell_to_polygon]{cell_to_polygon()}}.
 
 Information metrics: \code{\link[=publication_information]{publication_information()}}, \code{\link[=year_information]{year_information()}}.
+They need the publication dates of the datasets, see \code{\link[=add_dataset_info]{add_dataset_info()}}
+(also needed by \code{\link[=published_by_year]{published_by_year()}}).
 
 Most analyses have a \code{by_cell} argument to get one result per grid cell.
+}
+
+\section{Export}{
+
+\code{\link[=export_cube]{export_cube()}} writes a result as a Parquet file (with a JSON manifest) laid
+out to be read from a web page.
 }
 
 \section{Sampling bias}{

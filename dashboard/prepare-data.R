@@ -71,15 +71,13 @@ con <- connect_opendata_local(data_path)
 
 statement <- con |>
     set_area(area) |>
-    set_period(date_start, date_end) |>
-    set_depth(min_depth, max_depth) |>
     set_grid(grid_type = "h3", resolution = resolution) |>
     set_taxonomic_level(information_rank)
 
+# The setters warn when called with nothing to set, so only call them if needed
+if (!is.null(date_start) || !is.null(date_end)) statement <- set_period(statement, date_start, date_end)
+if (!is.null(min_depth) || !is.null(max_depth)) statement <- set_depth(statement, min_depth, max_depth)
 if (!is.null(taxa)) statement <- do.call(set_filters, c(list(statement), taxa))
-
-# Apply the area, period and taxa once; all the analyses read the result
-statement <- pre_compute(statement)
 
 # Dataset publication dates
 has_dataset_info <- FALSE
@@ -111,30 +109,28 @@ save <- function(x, name, row_group_size = 1000) {
     message("Saved ", name, " (", nrow(x), " rows)")
 }
 
-stats <- basic_stats(statement)
-save(stats, "basic_stats")
+# Run the analyses. The area, period and taxa are applied to the OBIS data only once
+# (run_analyses() does it); each result is saved with the name of its analysis.
+analyses <- c(
+    "basic_stats", "records_by_year", "records_by_month", "cumulative_species",
+    "taxon_level", "depth_coverage", "datasets_by_extension", "species_list",
+    "depth_bands", "cell_histogram", "records_by_cell", "year_information"
+)
+if (has_dataset_info) analyses <- c(analyses, "published_by_year", "publication_information")
+
+results <- run_analyses(statement, analyses)
+
+# The extra analyses below (by cell, by phylum) reuse the selection already applied
+statement <- attr(results, "query")
+
+for (name in setdiff(analyses, "records_by_cell")) save(results[[name]], name)
 
 # One row per grid cell, with all the cell metrics the map can show
-cells <- records_by_cell(statement) |>
+cells <- results$records_by_cell |>
     left_join(select(basic_stats(statement, by = "cell"), -n_records, -n_species), by = "cell")
 save(cells, "cells")
-save(cell_histogram(statement), "cell_histogram")
 
-save(records_by_year(statement), "records_by_year")
-save(records_by_month(statement), "records_by_month")
-save(cumulative_species(statement), "cumulative_species")
 save(cumulative_species(statement, by = "phylum"), "cumulative_species_phylum")
-save(taxon_level(statement), "taxon_level")
-save(depth_coverage(statement), "depth_coverage")
-save(depth_bands(statement), "depth_bands")
-save(datasets_by_extension(statement), "datasets_by_extension")
-save(species_list(statement), "species_list")
-save(year_information(statement), "year_information")
-
-if (has_dataset_info) {
-    save(published_by_year(statement), "published_by_year")
-    save(publication_information(statement), "publication_information")
-}
 
 # ---- Description of the analysis ----------------------------------------------
 

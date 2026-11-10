@@ -22,6 +22,11 @@ connection. It is needed by the analyses that use the publication date of the
 datasets, such as \code{\link[=published_by_year]{published_by_year()}} and \code{\link[=publication_information]{publication_information()}}. Nothing
 is done if the table already exists.
 }
+\details{
+The table lives in the connection, not on disk: it has to be created again
+for each new connection. Calling it with a query that was already
+pre-computed (see \code{\link[=pre_compute]{pre_compute()}}) is fine, as the connection is shared.
+}
 \examples{
 \dontrun{
 con |> add_dataset_info()

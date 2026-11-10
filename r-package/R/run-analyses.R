@@ -29,7 +29,8 @@
 #' @param pre_compute logical. Pre-compute the query first, if it was not yet?
 #' @param verbose logical. Print the SQL of each analysis?
 #' @return an `abra_query_result_list`: a named list with the result of each
-#'   analysis.
+#'   analysis. The (pre-computed) query used is kept in `attr(x, "query")`, to run
+#'   further analyses on it without scanning the full dataset again.
 #' @family analyses
 #' @export
 #' @examples
@@ -40,6 +41,9 @@
 #'   run_analyses(c("basic_stats", "records_by_year"))
 #'
 #' results$basic_stats
+#'
+#' # further analyses on the same (already pre-computed) selection
+#' basic_stats(attr(results, "query"), by = "dataset")
 #' }
 run_analyses <- function(query, analyses = .default_analyses, pre_compute = TRUE, verbose = FALSE) {
     query <- .as_query(query)
@@ -59,5 +63,6 @@ run_analyses <- function(query, analyses = .default_analyses, pre_compute = TRUE
     })
     names(results) <- analyses
     class(results) <- c("abra_query_result_list", class(results))
+    attr(results, "query") <- query
     results
 }

@@ -12,7 +12,13 @@
 #
 # Each group is pre-computed once with `pre_compute()`: the area, period and taxa
 # are applied to the full dataset a single time and saved in a table, and all the
-# metrics below read from that table.
+# metrics below read from that table. This is the slow step (it reads all the OBIS
+# data); the analyses after it are fast.
+#
+# Run it from the root of the repository (`devtools::load_all("r-package")` loads
+# the package from source; with the package installed, use `library(abra)` only).
+# Needs a local copy of the OBIS open data (`robisdb::sync_opendata()`) and the
+# packages robisdb, sf, dplyr, ggplot2 and mregions2 (for the Mediterranean area).
 
 devtools::load_all("r-package")
 library(robisdb)

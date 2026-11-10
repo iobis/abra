@@ -21,7 +21,11 @@ an \code{abra_query} object, with the depth definer set. If both
 (with a warning).
 }
 \description{
-Set the depth range of interest for a query
+Keeps the records whose minimum depth is at least \code{startdepth} and whose
+maximum depth is at most \code{enddepth}. Records without depth information
+do not satisfy the condition and are left out, so setting a depth range
+also removes them from every analysis (see \code{\link[=depth_coverage]{depth_coverage()}} for how many
+records that is).
 }
 \examples{
 \dontrun{

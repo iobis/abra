@@ -1,7 +1,8 @@
 #' Export a query result as a Hyparquet-ready cube, with a manifest sidecar
 #'
 #' Writes `data` to a Parquet file laid out for efficient client-side range
-#' scans (see the `obis-dashboard-template` project): sorted by `dimensions`
+#' scans (for example by a static dashboard using
+#' [Hyparquet](https://github.com/hyparam/hyparquet)): sorted by `dimensions`
 #' (then `geo_col`, if set) and written with a small row group size, so a
 #' browser-side Parquet reader doing predicate pushdown on `dimensions` only
 #' has to read the row groups that actually match a filter, instead of the
@@ -61,9 +62,10 @@
 #' @examples
 #' \dontrun{
 #' con |>
+#'   set_area(area) |>
 #'   set_grid(grid_type = "h3", resolution = 4) |>
-#'   basic_stats(by = "cell") |>
-#'   export_cube("cube.parquet", dimensions = "basis_of_record", geo_col = NULL)
+#'   records_by_year(by_cell = TRUE) |>
+#'   export_cube("records_by_year_cube.parquet", dimensions = "date_year")
 #' }
 export_cube <- function(
     data,

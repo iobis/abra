@@ -2,3 +2,6 @@
 *_files/
 report.pdf
 report.typ
+
+/.quarto/
+**/*.quarto_ipynb

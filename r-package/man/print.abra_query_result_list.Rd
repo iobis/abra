@@ -15,6 +15,6 @@
 \code{x}, invisibly.
 }
 \description{
-Prints a summary of the area/period/depth/filters/grid that produced the
-result.
+Prints the names of the results in the list, and a summary of the
+area/period/depth/filters/grid that produced them.
 }

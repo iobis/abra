@@ -1,16 +1,20 @@
 #' Abort with a `cli`-formatted message
 #'
-#' Alias for [cli::cli_abort()], used throughout the package for error
+#' Thin wrapper of [cli::cli_abort()], used throughout the package for error
 #' messages.
 #' @noRd
-.em <- cli::cli_abort
+.em <- function(message, ..., .envir = parent.frame()) {
+    cli::cli_abort(message, ..., .envir = .envir)
+}
 
 #' Warn with a `cli`-formatted message
 #'
-#' Alias for [cli::cli_warn()], used throughout the package for warnings
+#' Thin wrapper of [cli::cli_warn()], used throughout the package for warnings
 #' (e.g. unsupported filters being ignored).
 #' @noRd
-.wm <- cli::cli_warn
+.wm <- function(message, ..., .envir = parent.frame()) {
+    cli::cli_warn(message, ..., .envir = .envir)
+}
 
 #' Determine which OBIS data product a connection points to
 #'
@@ -131,3 +135,9 @@
     last <- if (is.finite(breaks[n])) sprintf("else '%s+'", fmt(breaks[n])) else NULL
     paste(c("case", whens, last, "end as depth_band"), collapse = "\n")
 }
+
+#' Default for `NULL`
+#'
+#' Same as the operator of base R (4.4+), defined here to support older versions.
+#' @noRd
+`%||%` <- function(x, y) if (is.null(x)) y else x

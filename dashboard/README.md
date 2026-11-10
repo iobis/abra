@@ -14,7 +14,12 @@ the browser. So it can be hosted for free on GitHub Pages.
 You do **not** need to know Svelte to use it. To make your own dashboard you only
 change an R script (the area) and one settings file (the texts and colors).
 
-A PDF version of the same analysis can be made with the [Quarto report](../quarto).
+A PDF version of the same analysis can be made with the [Quarto report](../quarto),
+which reads the same files in `static/data/`:
+
+```sh
+cd ../quarto && quarto render report.qmd
+```
 
 ## Contents
 
@@ -54,7 +59,11 @@ Rscript prepare-data.R
 
 This needs R, the [abra](../r-package) and [robisdb](https://github.com/iobis/robisdb)
 packages, and a local copy of the OBIS open data (see
-`robisdb::sync_opendata()`). It saves the results in `static/data/`.
+`robisdb::sync_opendata()`); set its location in `data_path` (or in the environment
+variable `OBIS_DATA`). The default area is taken from
+[Marine Regions](https://marineregions.org) with the `mregions2` package: install it,
+or replace `area` by a WKT polygon. It saves the results in `static/data/`. Reading
+the whole open data takes a while for a large area.
 
 **Step 2: change the texts and colors.** Edit
 [`src/lib/config.ts`](src/lib/config.ts) (see [Settings](#settings-srclibconfigts)).

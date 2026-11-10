@@ -29,7 +29,8 @@ eight, which need no grid or extra table. The others need a grid
 }
 \value{
 an \code{abra_query_result_list}: a named list with the result of each
-analysis.
+analysis. The (pre-computed) query used is kept in \code{attr(x, "query")}, to run
+further analyses on it without scanning the full dataset again.
 }
 \description{
 Runs a set of analyses with their default arguments. The query is
@@ -45,6 +46,9 @@ results <- con |>
   run_analyses(c("basic_stats", "records_by_year"))
 
 results$basic_stats
+
+# further analyses on the same (already pre-computed) selection
+basic_stats(attr(results, "query"), by = "dataset")
 }
 }
 \seealso{

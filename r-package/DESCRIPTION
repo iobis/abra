@@ -3,11 +3,16 @@ Title: OBIS Area-Based Records Analysis
 Version: 0.0.0.9000
 Authors@R: 
     person("Silas", "Principe", , "s.principe@unesco.org", role = c("aut", "cre"))
-Description: Area based analysis of marine records from OBIS. Set an area, period, taxa and a grid on a robisdb connection, and run analyses such as basic statistics and information metrics.
+Description: Area based analysis of marine records from OBIS. Set an area, period, depth, taxa and a grid on a
+    robisdb connection to the OBIS open data, and run analyses such as basic statistics, records and species
+    through time, depth and taxonomic coverage, and information metrics.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.1.0)
 Imports:
     arrow,
     cli,
@@ -20,6 +25,7 @@ Imports:
     tibble
 Suggests:
     robis,
-    terra
+    terra,
+    testthat (>= 3.0.0)
 Remotes:
     iobis/robisdb
