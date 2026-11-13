@@ -33,8 +33,40 @@ export interface Meta {
   files?: string[];
 }
 
+// Folder (inside `static/`) with the data. `config.dataPath` unless the environment
+// variable VITE_DATA_PATH is set (e.g. `VITE_DATA_PATH=eov-med npm run dev`).
+const root: string = import.meta.env.VITE_DATA_PATH || config.dataPath;
+let folder = root;
+
+/** One of several analyses in the same data folder (see `loadAnalyses`). */
+export interface AnalysisOption {
+  id: string;
+  label: string;
+}
+
+/**
+ * Several analyses in one site: if the data folder has an `analyses.json` file
+ * (`[{"id": "corals", "label": "Corals"}, ...]`), each analysis lives in a subfolder
+ * with the name of its id, and the page shows a switch between them. The one shown is
+ * set by `?data=<id>` in the address (the first one by default). Without that file the
+ * files are read straight from the data folder. Call this once before reading data.
+ */
+export async function loadAnalyses(): Promise<{ options: AnalysisOption[]; current: string | null }> {
+  try {
+    const response = await fetch(`${base}/${root}/analyses.json`);
+    const options: AnalysisOption[] = response.ok ? await response.json() : [];
+    if (!Array.isArray(options) || !options.length) return { options: [], current: null };
+    const wanted = new URLSearchParams(location.search).get('data');
+    const current = options.find((o) => o.id === wanted)?.id ?? options[0].id;
+    folder = `${root}/${current}`;
+    return { options, current };
+  } catch {
+    return { options: [], current: null };
+  }
+}
+
 /** Address of a file of the data folder. */
-export const dataUrl = (file: string) => `${base}/${config.dataPath}/${file}`;
+export const dataUrl = (file: string) => `${base}/${folder}/${file}`;
 
 const buffers = new Map<string, Promise<AsyncBuffer>>();
 const tables = new Map<string, Promise<Row[]>>();

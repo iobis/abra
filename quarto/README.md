@@ -35,6 +35,18 @@ quarto render report.qmd
 This creates `report.pdf` (not tracked by git). In RStudio or Positron, use the
 *Render* button.
 
+To render the results of another folder, give its path (relative to this folder) in
+the `data_dir` parameter. This is how
+[`dev/full-example`](../dev/full-example) makes one report per group of taxa:
+
+```sh
+quarto render report.qmd -P data_dir:../dashboard/static/eov-med/corals
+```
+
+Note that Quarto deletes the previous PDF of the document when it renders, even if
+the new one has another name. Copy the PDFs you want to keep, or render a copy of
+`report.qmd` as `dev/full-example/02-render-reports.R` does.
+
 ## What you need
 
 - [Quarto](https://quarto.org/docs/get-started/) 1.4 or newer

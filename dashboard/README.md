@@ -101,7 +101,7 @@ Notes:
 |---|---|
 | `title`, `subtitle` | Texts at the top. Empty: the ones from `prepare-data.R` are used. |
 | `intro` | Short paragraph under the title (empty to hide it). |
-| `dataPath` | Folder in `static/` with the Parquet files (default `data`). |
+| `dataPath` | Folder in `static/` with the Parquet files (default `data`). The environment variable `VITE_DATA_PATH` overrides it. |
 | `sections` | Sections to show, in order. Remove a line to hide a section. |
 | `colors` | Main colors of the charts. |
 | `map.metrics` | What the map can show: a column of `cells.parquet` and a label. |
@@ -109,6 +109,22 @@ Notes:
 | `map.style` | Basemap (a MapLibre style). The default uses the OBIS tiles. |
 | `map.ramp` | Colors of the map, from low to high values. |
 | `links` | Links in the footer. |
+
+## Several analyses in one site
+
+To show several analyses (for example several groups of taxa) in the same dashboard,
+put each one in a subfolder of the data folder, and add a file `analyses.json` with
+their names:
+
+```json
+[{"id": "corals", "label": "Corals"}, {"id": "fishes", "label": "Fishes"}]
+```
+
+The page shows a button for each one under the title, and `?data=fishes` in the
+address opens one directly. Use the environment variable `VITE_DATA_PATH` to choose
+the folder of `static/` with the data instead of editing `dataPath`, for example
+`VITE_DATA_PATH=eov-med npm run dev`. A complete example is in
+[`dev/full-example`](../dev/full-example).
 
 ## How it works
 

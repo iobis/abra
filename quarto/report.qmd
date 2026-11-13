@@ -19,6 +19,10 @@ format:
     fig-format: png
     fig-dpi: 200
     columns: 1
+params:
+  # Folder with the results made by `dashboard/prepare-data.R`, relative to this file.
+  # Render another one with: quarto render report.qmd -P data_dir:path/to/data
+  data_dir: "../dashboard/static/data"
 execute:
   echo: false
   warning: false
@@ -30,8 +34,9 @@ execute:
 #| include: false
 
 # ---- SETTINGS -----------------------------------------------------------------
-# Folder with the results made by `dashboard/prepare-data.R` (relative to this file)
-data_dir <- "../dashboard/static/data"
+# Folder with the results made by `dashboard/prepare-data.R` (relative to this file).
+# It is set at the top of this file (`params`) or with `quarto render -P data_dir:...`
+data_dir <- params$data_dir
 
 # Colors
 primary <- "#113b9f"

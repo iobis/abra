@@ -21,13 +21,17 @@ the \code{abra_query} object, marked as pre-computed.
 \description{
 Applies the area, period, depth and filters of the query once, and saves the
 matching records in a table (\code{obis_computed} by default) of the connection.
+Only what the analyses use is kept (the dataset, the 15 \code{interpreted} fields
+they read, and whether the record has an eMoF or DNA extension), which keeps the
+table small and fast to build even for large areas.
+}
+\details{
 The analysis functions (e.g. \code{\link[=basic_stats]{basic_stats()}}) run afterwards on the returned
 object read from this table instead of the full dataset, and ignore the area,
 period, depth and filters (they were already applied). This is much faster when several
 analyses are run for the same selection, as the full dataset is only scanned
 once.
-}
-\details{
+
 The grid, \code{\link[=set_depth_bands]{set_depth_bands()}} and \code{\link[=set_taxonomic_level]{set_taxonomic_level()}} are not part of the
 pre-computation and can still be changed between runs. If the area, period,
 depth or filters of the returned object are changed afterwards, or the table

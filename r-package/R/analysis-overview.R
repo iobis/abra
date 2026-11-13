@@ -463,15 +463,13 @@ depth_bands <- function(query, by_cell = FALSE, verbose = FALSE) {
 datasets_by_extension <- function(query, verbose = FALSE) {
     query <- .as_query(query)
     s <- .analysis_source(query)
-    emof <- 'extensions."http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact"'
-    dna <- 'extensions."http://rs.gbif.org/terms/1.0/DNADerivedData"'
 
     sql <- glue::glue("
         with datasets as (
             select
                 dataset_id,
-                coalesce(bool_or(len({emof}) > 0), false) as has_emof,
-                coalesce(bool_or(len({dna}) > 0), false) as has_dna
+                coalesce(bool_or({s$has_emof}), false) as has_emof,
+                coalesce(bool_or({s$has_dna}), false) as has_dna
             from {s$table}
             where {s$where}
             group by dataset_id

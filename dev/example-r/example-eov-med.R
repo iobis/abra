@@ -1,4 +1,4 @@
-# Example: essential ocean variables (EOVs) in the Mediterranean Sea
+# Example: essential ocean variables (EOVs) in the French part of the Mediterranean Sea
 #
 # Three biological groups are explored with the same area, period and grid:
 #   - hard and soft corals
@@ -10,10 +10,9 @@
 # `Teleostei`, not `Actinopterygii`). Different ranks can be mixed: the result is
 # the union of the taxa.
 #
-# Each group is pre-computed once with `pre_compute()`: the area, period and taxa
-# are applied to the full dataset a single time and saved in a table, and all the
-# metrics below read from that table. This is the slow step (it reads all the OBIS
-# data); the analyses after it are fast.
+# Each group is run with `run_analyses()`: the area, period and taxa are applied to
+# the OBIS data a single time per group, and all its analyses read the result. This
+# is the slow step (it reads all the OBIS data); the analyses themselves are fast.
 #
 # Run it from the root of the repository (`devtools::load_all("r-package")` loads
 # the package from source; with the package installed, use `library(abra)` only).
@@ -32,7 +31,7 @@ con <- connect_opendata_local("/Volumes/OBIS2/data/obis_data")
 
 # Area ------------------------------------------------------------------------
 
-target_area <- mregions2::gaz_geometry(1905, multipart = FALSE)
+target_area <- mregions2::gaz_geometry(25185, multipart = FALSE)
 target_area <- st_union(st_buffer(target_area[, 1], 0.01))
 plot(target_area)
 
@@ -64,30 +63,29 @@ base_query <- con |>
     set_period("2000-01-01", "2025-12-31") |>
     set_grid(grid_type = "h3", resolution = target_resolution)
 
-# One pre-computed query per group. Each pre_compute() scans the full dataset and
-# creates a table in the connection, so they are given different names.
-eov_queries <- lapply(names(eovs), \(eov) {
-    query <- do.call(set_filters, c(list(base_query), eovs[[eov]]))
-    pre_compute(query, table = paste0("obis_", eov))
-})
-names(eov_queries) <- names(eovs)
+# One query per group
+eov_queries <- lapply(eovs, \(filters) do.call(set_filters, c(list(base_query), filters)))
 
 eov_queries$corals
 
+# Analyses -------------------------------------------------------------------
+# The publication dates of the datasets are needed by `publication_information()`
+con |> add_dataset_info()
 
-
-# Whole-area analyses ---------------------------------------------------------
-# run_analyses() runs a set of analyses with default arguments. The queries are
-# already pre-computed, so none of them scans the full dataset again.
+# `run_analyses()` runs a set of analyses with default arguments, and applies the
+# selection to the OBIS data only once per group. This is the slow step.
 # A name that matches nothing silently gives zero records: check `n_records`.
+analyses <- c(
+    "basic_stats", "records_by_year", "cumulative_species", "species_list",
+    "records_by_cell", "cell_histogram", "cell_evenness",
+    "year_information", "publication_information"
+)
 
-analyses <- c("basic_stats", "records_by_year", "cumulative_species", "species_list")
+results <- lapply(eov_queries, run_analyses, analyses = analyses)
 
-global <- lapply(eov_queries, run_analyses, analyses = analyses)
-
-global$corals$basic_stats
-global$seagrass$basic_stats
-global$fishes$basic_stats
+results$corals$basic_stats
+results$seagrass$basic_stats
+results$fishes$basic_stats
 
 # Combine one analysis across the groups
 combine <- function(results, analysis) {
@@ -97,8 +95,8 @@ combine <- function(results, analysis) {
 }
 
 # Sampling effort over time and species accumulation
-records_year <- combine(global, "records_by_year")
-cumulative <- combine(global, "cumulative_species")
+records_year <- combine(results, "records_by_year")
+cumulative <- combine(results, "cumulative_species")
 
 ggplot(records_year, aes(date_year, n_records, color = eov)) +
     geom_line() +
@@ -112,8 +110,6 @@ ggplot(cumulative, aes(first_year, cumulative_species, color = eov)) +
 
 # Analyses by grid cell -------------------------------------------------------
 
-by_cell <- lapply(eov_queries, records_by_cell)
-
 map_metric <- function(cells, column, title) {
     ggplot(cell_to_polygon(cells, con)) +
         geom_sf(aes(fill = .data[[column]]), color = NA) +
@@ -122,21 +118,20 @@ map_metric <- function(cells, column, title) {
         theme_light()
 }
 
-map_metric(by_cell$corals, "n_species", "Corals: observed species richness")
-map_metric(by_cell$seagrass, "n_species", "Seagrass: observed species richness")
-map_metric(by_cell$fishes, "n_species", "Fishes: observed species richness")
+map_metric(results$corals$records_by_cell, "n_species", "Corals: observed number of species")
+map_metric(results$seagrass$records_by_cell, "n_species", "Seagrass: observed number of species")
+map_metric(results$fishes$records_by_cell, "n_species", "Fishes: observed number of species")
 
 # Observed richness follows sampling effort: read it together with the number of
 # records, and with how unevenly the records are spread over the cells
-map_metric(by_cell$corals, "n_records", "Corals: number of records")
-cell_histogram(eov_queries$corals)
-cell_evenness(eov_queries$corals)
+map_metric(results$corals$records_by_cell, "n_records", "Corals: number of records")
+results$corals$cell_histogram
+results$corals$cell_evenness
 
-# Information metric ----------------------------------------------------------
-# Needs the dataset publication dates
-con |> add_dataset_info()
-
-year_information(eov_queries$corals)
-publication_information(eov_queries$corals)
+# Information metrics ---------------------------------------------------------
+# Unique combinations of cell and taxon (phylum by default, see
+# `set_taxonomic_level()`) instead of records
+results$corals$year_information
+results$corals$publication_information
 
 disconnect(con)

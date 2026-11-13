@@ -30,15 +30,45 @@ NULL
     query
 }
 
-# Table to read the records from and the condition to apply to them: the
-# pre-computed table (conditions already applied) or the full `obis` table
+# Extension columns of the `obis` table that tell if a record has an eMoF or a DNA
+# derived data extension
+.emof_term <- "http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact"
+.dna_term <- "http://rs.gbif.org/terms/1.0/DNADerivedData"
+.extension_flag <- function(term) sprintf('len(extensions."%s") > 0', term)
+
+# Fields of the `interpreted` struct that the analyses use. pre_compute() keeps only
+# these: copying the whole struct (dozens of text fields) is much slower and larger.
+# Add a field here if an analysis starts to use a new one.
+.interpreted_fields <- c(
+    "kingdom", "phylum", "class", "order", "family", "genus", "species", "aphiaid",
+    "redlist_category", "date_year", "date_mid",
+    "decimalLatitude", "decimalLongitude",
+    "minimumDepthInMeters", "maximumDepthInMeters"
+)
+
+# SQL expression building a slim `interpreted` struct with `.interpreted_fields`
+.slim_interpreted <- function() {
+    paste0(
+        "struct_pack(",
+        paste0('"', .interpreted_fields, '" := interpreted."', .interpreted_fields, '"', collapse = ", "),
+        ")"
+    )
+}
+
+# Table to read the records from, the condition to apply to them and the expressions
+# that tell if a record has the eMoF or the DNA extension: the pre-computed table
+# (conditions already applied; it only keeps the columns used by the analyses) or the
+# full `obis` table
 .analysis_source <- function(query) {
     .check_open_data(query)
     pc <- .active_precomputed(query)
     if (!is.null(pc)) {
-        list(table = pc, where = "true")
+        list(table = pc, where = "true", has_emof = "has_emof", has_dna = "has_dna")
     } else {
-        list(table = "obis", where = .query_conditions(query))
+        list(
+            table = "obis", where = .query_conditions(query),
+            has_emof = .extension_flag(.emof_term), has_dna = .extension_flag(.dna_term)
+        )
     }
 }
 

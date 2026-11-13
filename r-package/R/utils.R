@@ -78,6 +78,25 @@
     paste0("(", paste(conds, collapse = " or "), ")")
 }
 
+#' Bounding box conditions of an area
+#'
+#' Conditions on the latitude and longitude of the records that keep every
+#' record inside the area (the bounding box contains the area). They are cheap
+#' for the database, and let it skip the Parquet row groups outside the box, so
+#' they speed up the (slower) intersection with the area.
+#'
+#' @param wkt the area, as a WKT string.
+#' @return a string.
+#' @noRd
+.bbox_conditions <- function(wkt) {
+    bb <- as.numeric(sf::st_bbox(sf::st_as_sfc(wkt)))
+    fmt <- function(x) format(x, digits = 15, scientific = FALSE, trim = TRUE)
+    paste0(
+        "interpreted.decimalLatitude between ", fmt(bb[2]), " and ", fmt(bb[4]),
+        " and interpreted.decimalLongitude between ", fmt(bb[1]), " and ", fmt(bb[3])
+    )
+}
+
 #' Build the WHERE-clause conditions of a query
 #'
 #' Translates the `filters`/`period`/`depth`/`area` definers of an `abra_query`
@@ -109,6 +128,9 @@
         flags = filters$flags
     )
     where_q <- c(where_q, .taxon_conditions(filters))
+    # the bounding box first: it can be checked with the statistics of the Parquet
+    # row groups (skipping most of the files), unlike the intersection with the area
+    if (!is.null(area)) where_q <- c(.bbox_conditions(area), where_q)
 
     paste(c("dropped is not true and absence is not true", where_q), collapse = " and ")
 }

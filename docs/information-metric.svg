@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 676" width="1000" height="676" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">How the information metric works</title>
+<desc id="d">Records are reduced to unique combinations of grid cell and taxon; the number of combinations per year is the information metric. 14 records in 3 cells and 3 phyla give 6 combinations.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a94a1"/></marker></defs>
+<rect x="0.5" y="0.5" width="999" height="675" rx="14" fill="#ffffff" stroke="#d0d7de"/>
+<text x="30" y="48" font-size="24" font-weight="700" fill="#1f2933" text-anchor="start" >How the information metric works</text>
+<text x="30" y="74" font-size="14" font-weight="400" fill="#5f6b7a" text-anchor="start" >It counts what is new about an area &#8211; unique combinations of grid cell and taxon &#8211; not how many records were collected.</text>
+<rect x="30" y="100" width="280" height="290" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="360" y="100" width="280" height="290" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="690" y="100" width="280" height="290" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<line x1="318" y1="245.0" x2="352" y2="245.0" stroke="#8a94a1" stroke-width="2" marker-end="url(#arr)"/>
+<line x1="648" y1="245.0" x2="682" y2="245.0" stroke="#8a94a1" stroke-width="2" marker-end="url(#arr)"/>
+<circle cx="48" cy="124" r="12" fill="#1f2933"/>
+<text x="48" y="129" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >1</text>
+<text x="68" y="129" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Records in the area</text>
+<polygon points="164.4,183.0 164.4,225.0 128.0,246.0 91.6,225.0 91.6,183.0 128.0,162.0" fill="#fff" stroke="#8a94a1" stroke-width="1.5"/>
+<text x="83.62693304105358" y="208" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="end" >A</text>
+<polygon points="237.1,183.0 237.1,225.0 200.7,246.0 164.4,225.0 164.4,183.0 200.7,162.0" fill="#fff" stroke="#8a94a1" stroke-width="1.5"/>
+<text x="245.11920087683927" y="208" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="start" >B</text>
+<polygon points="200.7,246.0 200.7,288.0 164.4,309.0 128.0,288.0 128.0,246.0 164.4,225.0" fill="#fff" stroke="#8a94a1" stroke-width="1.5"/>
+<text x="120.0" y="271.0" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="end" >C</text>
+<circle cx="110.0" cy="196.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="124.0" cy="210.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="138.0" cy="190.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="140.0" cy="214.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="126.0" cy="178.0" r="5.5" fill="#d1495b" stroke="#fff" stroke-width="1.2"/>
+<circle cx="184.7" cy="190.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="200.7" cy="202.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="216.7" cy="194.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="188.7" cy="216.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="208.7" cy="220.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="220.7" cy="208.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="148.4" cy="267.0" r="5.5" fill="#113b9f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="164.4" cy="255.0" r="5.5" fill="#d1495b" stroke="#fff" stroke-width="1.2"/>
+<circle cx="178.4" cy="273.0" r="5.5" fill="#2a9d8f" stroke="#fff" stroke-width="1.2"/>
+<circle cx="55" cy="340" r="5.5" fill="#113b9f"/>
+<text x="66" y="344" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" >Chordata</text>
+<circle cx="147" cy="340" r="5.5" fill="#d1495b"/>
+<text x="158" y="344" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" >Mollusca</text>
+<circle cx="233" cy="340" r="5.5" fill="#2a9d8f"/>
+<text x="244" y="344" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" >Arthropoda</text>
+<text x="50" y="370" font-size="13" font-weight="600" fill="#5f6b7a" text-anchor="start" >14 records, 3 cells, 3 phyla</text>
+<circle cx="378" cy="124" r="12" fill="#1f2933"/>
+<text x="378" y="129" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >2</text>
+<text x="398" y="129" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Unique cell &#215; taxon</text>
+<circle cx="448.5" cy="164" r="5.5" fill="#113b9f"/>
+<circle cx="494.5" cy="164" r="5.5" fill="#d1495b"/>
+<circle cx="540.5" cy="164" r="5.5" fill="#2a9d8f"/>
+<text x="594" y="168" font-size="11" font-weight="600" fill="#8d5fd3" text-anchor="middle" >combos</text>
+<text x="400" y="214.0" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<rect x="429" y="189" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="449.0" y="214.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >4</text>
+<rect x="475" y="189" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="495.0" y="214.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >1</text>
+<rect x="521" y="189" width="40" height="40" rx="6" fill="#fff" stroke="#d0d7de" stroke-dasharray="3 3"/>
+<text x="594" y="215.0" font-size="17" font-weight="700" fill="#8d5fd3" text-anchor="middle" >2</text>
+<text x="400" y="260.0" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="middle" >B</text>
+<rect x="429" y="235" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="449.0" y="260.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >6</text>
+<rect x="475" y="235" width="40" height="40" rx="6" fill="#fff" stroke="#d0d7de" stroke-dasharray="3 3"/>
+<rect x="521" y="235" width="40" height="40" rx="6" fill="#fff" stroke="#d0d7de" stroke-dasharray="3 3"/>
+<text x="594" y="261.0" font-size="17" font-weight="700" fill="#8d5fd3" text-anchor="middle" >1</text>
+<text x="400" y="306.0" font-size="14" font-weight="700" fill="#5f6b7a" text-anchor="middle" >C</text>
+<rect x="429" y="281" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="449.0" y="306.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >1</text>
+<rect x="475" y="281" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="495.0" y="306.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >1</text>
+<rect x="521" y="281" width="40" height="40" rx="6" fill="#8d5fd3" fill-opacity="0.18" stroke="#8d5fd3" stroke-width="1.8"/>
+<text x="541.0" y="306.0" font-size="15" font-weight="700" fill="#8d5fd3" text-anchor="middle" >1</text>
+<text x="594" y="307.0" font-size="17" font-weight="700" fill="#8d5fd3" text-anchor="middle" >3</text>
+<text x="380" y="350" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >Number in a square = records it replaces.</text>
+<text x="380" y="372" font-size="13" font-weight="600" fill="#5f6b7a" text-anchor="start" >14 records become 6 combinations</text>
+<circle cx="708" cy="124" r="12" fill="#1f2933"/>
+<text x="708" y="129" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >3</text>
+<text x="728" y="129" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Count them per year</text>
+<text x="830.0" y="212" font-size="64" font-weight="700" fill="#8d5fd3" text-anchor="middle" >6</text>
+<text x="830.0" y="238" font-size="14" font-weight="600" fill="#1f2933" text-anchor="middle" >information in 2015</text>
+<line x1="720" y1="260" x2="940" y2="260" stroke="#d0d7de"/>
+<text x="830.0" y="286" font-size="13" font-weight="600" fill="#1f2933" text-anchor="middle" >Spatial evenness</text>
+<text x="830.0" y="308" font-size="13" font-weight="400" fill="#5f6b7a" text-anchor="middle" >cv = sd(2, 1, 3) / mean = 0.50</text>
+<text x="830.0" y="330" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >the lower the cv, the more evenly</text>
+<text x="830.0" y="348" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >the combinations are spread over cells</text>
+<rect x="30" y="410" width="470" height="240" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<rect x="530" y="410" width="440" height="240" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="50" y="440" font-size="15" font-weight="700" fill="#1f2933" text-anchor="start" >More records do not mean more information</text>
+<text x="50" y="501.0" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="start" >Records</text>
+<text x="50" y="579.0" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="start" >Information</text>
+<rect x="266" y="458" width="60" height="168" rx="6" fill="#8d5fd3" fill-opacity="0.08" stroke="#8d5fd3" stroke-opacity="0.5" stroke-dasharray="4 3"/>
+<rect x="140" y="472.0" width="40" height="50.0" rx="3" fill="#aab3be"/>
+<text x="160.0" y="467.0" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >240</text>
+<rect x="140" y="577.7777777777778" width="40" height="22.22222222222222" rx="3" fill="#8d5fd3"/>
+<text x="160.0" y="572.7777777777778" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="middle" >4</text>
+<text x="160.0" y="617" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2013</text>
+<rect x="208" y="509.5" width="40" height="12.5" rx="3" fill="#aab3be"/>
+<text x="228.0" y="504.5" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >60</text>
+<rect x="208" y="572.2222222222222" width="40" height="27.77777777777778" rx="3" fill="#8d5fd3"/>
+<text x="228.0" y="567.2222222222222" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="middle" >5</text>
+<text x="228.0" y="617" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2014</text>
+<rect x="276" y="519.0833333333334" width="40" height="2.9166666666666665" rx="3" fill="#aab3be"/>
+<text x="296.0" y="514.0833333333334" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >14</text>
+<rect x="276" y="566.6666666666666" width="40" height="33.33333333333333" rx="3" fill="#8d5fd3"/>
+<text x="296.0" y="561.6666666666666" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="middle" >6</text>
+<text x="296.0" y="617" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2015</text>
+<rect x="344" y="503.25" width="40" height="18.75" rx="3" fill="#aab3be"/>
+<text x="364.0" y="498.25" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >90</text>
+<rect x="344" y="555.5555555555555" width="40" height="44.44444444444444" rx="3" fill="#8d5fd3"/>
+<text x="364.0" y="550.5555555555555" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="middle" >8</text>
+<text x="364.0" y="617" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2016</text>
+<rect x="412" y="514.7083333333334" width="40" height="7.291666666666667" rx="3" fill="#aab3be"/>
+<text x="432.0" y="509.70833333333337" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >35</text>
+<rect x="412" y="550.0" width="40" height="50.0" rx="3" fill="#8d5fd3"/>
+<text x="432.0" y="545.0" font-size="12" font-weight="600" fill="#8d5fd3" text-anchor="middle" >9</text>
+<text x="432.0" y="617" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2017</text>
+<line x1="132" y1="522" x2="460" y2="522" stroke="#d0d7de"/>
+<line x1="132" y1="600" x2="460" y2="600" stroke="#d0d7de"/>
+<text x="480" y="440" font-size="11" font-weight="400" fill="#5f6b7a" text-anchor="end" font-style="italic">Illustrative values</text>
+<text x="550" y="440" font-size="15" font-weight="700" fill="#1f2933" text-anchor="start" >Two versions: when is the information counted?</text>
+<line x1="580" y1="522" x2="940" y2="522" stroke="#8a94a1" stroke-width="2"/>
+<line x1="600.0" y1="518" x2="600.0" y2="526" stroke="#8a94a1" stroke-width="2"/>
+<text x="600.0" y="544" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2015</text>
+<line x1="680.0" y1="518" x2="680.0" y2="526" stroke="#8a94a1" stroke-width="2"/>
+<text x="680.0" y="544" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2016</text>
+<line x1="760.0" y1="518" x2="760.0" y2="526" stroke="#8a94a1" stroke-width="2"/>
+<text x="760.0" y="544" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2017</text>
+<line x1="840.0" y1="518" x2="840.0" y2="526" stroke="#8a94a1" stroke-width="2"/>
+<text x="840.0" y="544" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2018</text>
+<line x1="920.0" y1="518" x2="920.0" y2="526" stroke="#8a94a1" stroke-width="2"/>
+<text x="920.0" y="544" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2019</text>
+<circle cx="600" cy="522" r="7" fill="#113b9f" stroke="#fff" stroke-width="1.5"/>
+<path d="M600,514 L600,488" stroke="#8d5fd3" stroke-width="2"/>
+<rect x="560" y="456" width="150" height="32" rx="6" fill="#fff" stroke="#8d5fd3"/>
+<text x="568" y="467" font-size="12" font-weight="700" fill="#8d5fd3" text-anchor="start" >Year information (YI)</text>
+<text x="568" y="481" font-size="11" font-weight="400" fill="#5f6b7a" text-anchor="start" >counted when observed</text>
+<path d="M600,556 L600,568 L920,568 L920,556" fill="none" stroke="#8a94a1" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<text x="760.0" y="584" font-size="11" font-weight="400" fill="#5f6b7a" text-anchor="middle" >dataset published later</text>
+<rect x="914" y="515" width="14" height="14" rx="3" fill="#8d5fd3" transform="rotate(45 921 522)"/>
+<path d="M920,514 L920,488" stroke="#8d5fd3" stroke-width="2"/>
+<rect x="790" y="456" width="150" height="32" rx="6" fill="#fff" stroke="#8d5fd3"/>
+<text x="798" y="467" font-size="12" font-weight="700" fill="#8d5fd3" text-anchor="start" >Publication info (PI)</text>
+<text x="798" y="481" font-size="11" font-weight="400" fill="#5f6b7a" text-anchor="start" >counted when published</text>
+<text x="550" y="615" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >A record observed in 2015 in a dataset published in 2019 adds to YI</text>
+<text x="550" y="633" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >in 2015 and to PI in 2019, when the information became available.</text>
+</svg>

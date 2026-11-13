@@ -2,6 +2,10 @@
 #'
 #' Applies the area, period, depth and filters of the query once, and saves the
 #' matching records in a table (`obis_computed` by default) of the connection.
+#' Only what the analyses use is kept (the dataset, the 15 `interpreted` fields
+#' they read, and whether the record has an eMoF or DNA extension), which keeps the
+#' table small and fast to build even for large areas.
+#'
 #' The analysis functions (e.g. [basic_stats()]) run afterwards on the returned
 #' object read from this table instead of the full dataset, and ignore the area,
 #' period, depth and filters (they were already applied). This is much faster when several
@@ -50,7 +54,16 @@ pre_compute <- function(abra_query, table = "obis_computed", overwrite = TRUE) {
     cli::cli_alert_info("Pre-computing table {.field {table}}, this scans the full dataset")
     robisdb::send_query(
         abra_query,
-        glue::glue("create or replace table {table} as select * from obis where {conditions}")
+        glue::glue("
+            create or replace table {table} as
+            select
+                dataset_id,
+                {.slim_interpreted()} as interpreted,
+                {.extension_flag(.emof_term)} as has_emof,
+                {.extension_flag(.dna_term)} as has_dna
+            from obis
+            where {conditions}
+        ")
     )
     n <- robisdb::get_query(abra_query, glue::glue("select count(*) as n from {table}"))$n
     cli::cli_alert_success("Table {.field {table}} created with {format(n, big.mark = ',')} records")

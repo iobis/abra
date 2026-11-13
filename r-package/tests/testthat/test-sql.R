@@ -34,6 +34,20 @@ test_that("query conditions combine period, depth, area and taxa", {
     expect_match(cond, "(interpreted.\"class\" in ('Teleostei') or interpreted.\"order\" in", fixed = TRUE)
 })
 
+test_that("a bounding box of the area is added before the intersection", {
+    wkt <- "POLYGON ((3 41, 6 41, 5 43, 3 41))"
+    q <- set_area(fake_con(), wkt)
+    cond <- .query_conditions(q)
+    expect_match(cond, "interpreted.decimalLatitude between 41 and 43", fixed = TRUE)
+    expect_match(cond, "interpreted.decimalLongitude between 3 and 6", fixed = TRUE)
+    # the box is checked before the intersection
+    expect_lt(regexpr("decimalLatitude", cond), regexpr("ST_Intersects", cond))
+    # no area, no box
+    expect_false(grepl("decimalLatitude", .query_conditions(.new_abra_query(fake_con()))))
+    # decimals are kept
+    expect_match(.bbox_conditions("POLYGON ((-0.5 10.25, 1 10.25, 1 11, -0.5 10.25))"), "between 10.25 and 11", fixed = TRUE)
+})
+
 test_that("taxon ids should be numeric", {
     expect_error(.taxon_conditions(list(taxonid = "1")), "numeric")
     expect_null(.taxon_conditions(list()))

@@ -17,6 +17,11 @@
 #' once. To change the arguments of an analysis (e.g. `by_cell`), call its
 #' function directly.
 #'
+#' The pre-computed records are saved in the table `obis_computed` of the
+#' connection, which the next call replaces. Use the query kept in the result
+#' (see below) before running another query on the same connection, or pre-compute
+#' each query into its own table with [pre_compute()].
+#'
 #' @param query an `abra_query` object (see [set_area()] and the other `set_*()`
 #'   functions).
 #' @param analyses names of the analyses to run: `basic_stats`, `records_by_year`,

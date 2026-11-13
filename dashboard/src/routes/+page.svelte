@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Component } from 'svelte';
   import { config } from '$lib/config';
-  import { dataUrl, loadMeta } from '$lib/data';
+  import { dataUrl, loadAnalyses, loadMeta } from '$lib/data';
   import Overview from '$lib/sections/Overview.svelte';
   import MapSection from '$lib/sections/MapSection.svelte';
   import TimeSection from '$lib/sections/TimeSection.svelte';
@@ -23,21 +23,29 @@
   };
 
   const sections = config.sections.filter((id) => id in available);
-  const metaPromise = loadMeta();
+  // The analyses have to be known before any file is read
+  const startPromise = loadAnalyses().then(async (analyses) => ({ analyses, meta: await loadMeta() }));
 </script>
 
 <svelte:head>
-  {#await metaPromise then meta}
+  {#await startPromise then { meta }}
     <title>{config.title || meta.title || 'OBIS dashboard'}</title>
   {/await}
 </svelte:head>
 
-{#await metaPromise then meta}
+{#await startPromise then { analyses, meta }}
   <header>
     <div class="inner">
       <h1>{config.title || meta.title || 'OBIS dashboard'}</h1>
       {#if config.subtitle || meta.subtitle}<p class="subtitle">{config.subtitle || meta.subtitle}</p>{/if}
       {#if config.intro}<p class="intro">{config.intro}</p>{/if}
+      {#if analyses.options.length > 1}
+        <div class="switch">
+          {#each analyses.options as option (option.id)}
+            <a href="?data={option.id}" class:active={option.id === analyses.current}>{option.label}</a>
+          {/each}
+        </div>
+      {/if}
     </div>
   </header>
 
@@ -101,6 +109,28 @@
     max-width: 75ch;
     font-size: 0.92rem;
     opacity: 0.85;
+  }
+
+  .switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+
+  .switch a {
+    padding: 0.3rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .switch a.active {
+    background: white;
+    color: var(--primary);
+    font-weight: 600;
   }
 
   nav {

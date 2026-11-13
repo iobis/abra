@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 822" width="1000" height="822" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">How the publication information metric works</title>
+<desc id="d">Records are described by grid cell, taxon and observation year. The datasets published in the same year are pooled, each unique combination of cell, taxon and observation year is kept once, and the combinations are counted per publication year.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a94a1"/></marker></defs>
+<rect x="0.5" y="0.5" width="999" height="821" rx="14" fill="#ffffff" stroke="#d0d7de"/>
+<text x="30" y="48" font-size="24" font-weight="700" fill="#1f2933" text-anchor="start" >How the publication information metric works</text>
+<text x="30" y="74" font-size="14" font-weight="400" fill="#5f6b7a" text-anchor="start" >Unique combinations of cell &#215; taxon &#215; observation year, counted in the year the dataset was published.</text>
+<rect x="30" y="100" width="940" height="236" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<circle cx="48" cy="124" r="12" fill="#1f2933"/>
+<text x="48" y="129" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >1</text>
+<text x="68" y="129" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Datasets, with the year they were published</text>
+<text x="50" y="154" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >Each record is described by its cell, taxon and observation year.</text>
+<circle cx="942" cy="150" r="5.5" fill="#2a9d8f"/>
+<text x="934" y="154" font-size="12" font-weight="400" fill="#1f2933" text-anchor="end" >Arthropoda</text>
+<circle cx="852" cy="150" r="5.5" fill="#d1495b"/>
+<text x="844" y="154" font-size="12" font-weight="400" fill="#1f2933" text-anchor="end" >Mollusca</text>
+<circle cx="772" cy="150" r="5.5" fill="#113b9f"/>
+<text x="764" y="154" font-size="12" font-weight="400" fill="#1f2933" text-anchor="end" >Chordata</text>
+
+<text x="50" y="186" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >Dataset 1</text>
+<rect x="134" y="173" width="108" height="22" rx="11" fill="#8d5fd3"/>
+<text x="188.0" y="188" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" >published 2018</text>
+<text x="206" y="186" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" ></text>
+<rect x="258" y="170" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="287.5,183.5 287.5,194.5 278.0,200.0 268.5,194.5 268.5,183.5 278.0,178.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="278" y="193" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="306" cy="189" r="6" fill="#113b9f"/>
+<text x="320" y="194" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="468" y="194" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >40 records</text>
+<rect x="494" y="170" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="523.5,183.5 523.5,194.5 514.0,200.0 504.5,194.5 504.5,183.5 514.0,178.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="514" y="193" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="542" cy="189" r="6" fill="#113b9f"/>
+<text x="556" y="194" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2011</text>
+<text x="704" y="194" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >25 records</text>
+<rect x="730" y="170" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="759.5,183.5 759.5,194.5 750.0,200.0 740.5,194.5 740.5,183.5 750.0,178.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="750" y="193" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >B</text>
+<circle cx="778" cy="189" r="6" fill="#d1495b"/>
+<text x="792" y="194" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="940" y="194" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >5 records</text>
+<line x1="50" y1="216" x2="950" y2="216" stroke="#d0d7de"/>
+<text x="50" y="238" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >Dataset 2</text>
+<rect x="134" y="225" width="108" height="22" rx="11" fill="#8d5fd3"/>
+<text x="188.0" y="240" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" >published 2018</text>
+<text x="206" y="238" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" ></text>
+<rect x="258" y="222" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="287.5,235.5 287.5,246.5 278.0,252.0 268.5,246.5 268.5,235.5 278.0,230.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="278" y="245" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="306" cy="241" r="6" fill="#113b9f"/>
+<text x="320" y="246" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="468" y="246" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >12 records</text>
+<rect x="494" y="222" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="523.5,235.5 523.5,246.5 514.0,252.0 504.5,246.5 504.5,235.5 514.0,230.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="514" y="245" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >B</text>
+<circle cx="542" cy="241" r="6" fill="#113b9f"/>
+<text x="556" y="246" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2012</text>
+<text x="704" y="246" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >3 records</text>
+<line x1="50" y1="268" x2="950" y2="268" stroke="#d0d7de"/>
+<text x="50" y="290" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >Dataset 3</text>
+<rect x="134" y="277" width="108" height="22" rx="11" fill="#8d5fd3"/>
+<text x="188.0" y="292" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" >published 2020</text>
+<text x="206" y="290" font-size="12" font-weight="400" fill="#1f2933" text-anchor="start" ></text>
+<rect x="258" y="274" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="287.5,287.5 287.5,298.5 278.0,304.0 268.5,298.5 268.5,287.5 278.0,282.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="278" y="297" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="306" cy="293" r="6" fill="#113b9f"/>
+<text x="320" y="298" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="468" y="298" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >2 records</text>
+<rect x="494" y="274" width="220" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="523.5,287.5 523.5,298.5 514.0,304.0 504.5,298.5 504.5,287.5 514.0,282.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="514" y="297" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >C</text>
+<circle cx="542" cy="293" r="6" fill="#2a9d8f"/>
+<text x="556" y="298" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2015</text>
+<text x="704" y="298" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >8 records</text>
+<text x="169" y="271" font-size="1" font-weight="400" fill="#1f2933" text-anchor="start" ></text>
+<text x="169" y="166" font-size="1" font-weight="400" fill="#1f2933" text-anchor="start" ></text>
+<line x1="500" y1="342" x2="500" y2="372" stroke="#8a94a1" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="30" y="380" width="610" height="362" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<circle cx="48" cy="404" r="12" fill="#1f2933"/>
+<text x="48" y="409" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >2</text>
+<text x="68" y="409" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Pool each publication year, keep each combination once</text>
+<rect x="50" y="432" width="278" height="262" rx="10" fill="#fff" stroke="#8d5fd3" stroke-opacity="0.6"/>
+<rect x="62" y="442" width="54" height="22" rx="11" fill="#8d5fd3"/>
+<text x="89.0" y="457" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" >2018</text>
+<text x="126" y="458" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >Datasets 1 + 2</text>
+<rect x="64" y="476" width="250" height="38" rx="8" fill="#f3ecfc" stroke="#8d5fd3"/>
+<polygon points="93.5,489.5 93.5,500.5 84.0,506.0 74.5,500.5 74.5,489.5 84.0,484.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="84" y="499" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="112" cy="495" r="6" fill="#113b9f"/>
+<text x="126" y="500" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="304" y="500" font-size="12" font-weight="400" fill="#8d5fd3" text-anchor="end" >D1 + D2</text>
+<rect x="64" y="522" width="250" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="93.5,535.5 93.5,546.5 84.0,552.0 74.5,546.5 74.5,535.5 84.0,530.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="84" y="545" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="112" cy="541" r="6" fill="#113b9f"/>
+<text x="126" y="546" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2011</text>
+<text x="304" y="546" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >D1</text>
+<rect x="64" y="568" width="250" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="93.5,581.5 93.5,592.5 84.0,598.0 74.5,592.5 74.5,581.5 84.0,576.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="84" y="591" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >B</text>
+<circle cx="112" cy="587" r="6" fill="#d1495b"/>
+<text x="126" y="592" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="304" y="592" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >D1</text>
+<rect x="64" y="614" width="250" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="93.5,627.5 93.5,638.5 84.0,644.0 74.5,638.5 74.5,627.5 84.0,622.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="84" y="637" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >B</text>
+<circle cx="112" cy="633" r="6" fill="#113b9f"/>
+<text x="126" y="638" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2012</text>
+<text x="304" y="638" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >D2</text>
+<text x="189.0" y="682" font-size="14" font-weight="700" fill="#8d5fd3" text-anchor="middle" >4 unique combinations</text>
+<rect x="342" y="432" width="278" height="262" rx="10" fill="#fff" stroke="#8d5fd3" stroke-opacity="0.6"/>
+<rect x="354" y="442" width="54" height="22" rx="11" fill="#8d5fd3"/>
+<text x="381.0" y="457" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" >2020</text>
+<text x="418" y="458" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >Dataset 3</text>
+<rect x="356" y="476" width="250" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="385.5,489.5 385.5,500.5 376.0,506.0 366.5,500.5 366.5,489.5 376.0,484.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="376" y="499" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >A</text>
+<circle cx="404" cy="495" r="6" fill="#113b9f"/>
+<text x="418" y="500" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2010</text>
+<text x="596" y="500" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >D3</text>
+<rect x="356" y="522" width="250" height="38" rx="8" fill="#fff" stroke="#d0d7de"/>
+<polygon points="385.5,535.5 385.5,546.5 376.0,552.0 366.5,546.5 366.5,535.5 376.0,530.0" fill="#fff" stroke="#8a94a1" stroke-width="1.3"/>
+<text x="376" y="545" font-size="11" font-weight="700" fill="#5f6b7a" text-anchor="middle" >C</text>
+<circle cx="404" cy="541" r="6" fill="#2a9d8f"/>
+<text x="418" y="546" font-size="14" font-weight="700" fill="#1f2933" text-anchor="start" >2015</text>
+<text x="596" y="546" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="end" >D3</text>
+<text x="481.0" y="682" font-size="14" font-weight="700" fill="#8d5fd3" text-anchor="middle" >2 unique combinations</text>
+<text x="50" y="716" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >Records of the same combination count once, even from different datasets (52 records &#8594; 1).</text>
+<text x="50" y="733" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="start" >The same combination published again in a later year counts again in that year.</text>
+<line x1="648" y1="561.0" x2="682" y2="561.0" stroke="#8a94a1" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="690" y="380" width="280" height="362" rx="10" fill="#f6f8fa" stroke="#d0d7de"/>
+<circle cx="708" cy="404" r="12" fill="#1f2933"/>
+<text x="708" y="409" font-size="13" font-weight="700" fill="#fff" text-anchor="middle" >3</text>
+<text x="728" y="409" font-size="16" font-weight="700" fill="#1f2933" text-anchor="start" >Count per publication year</text>
+<text x="706" y="554.0" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="start" >Records</text>
+<text x="706" y="656.0" font-size="13" font-weight="700" fill="#8d5fd3" text-anchor="start" >PI</text>
+<rect x="782" y="520.0" width="40" height="60.0" rx="3" fill="#aab3be"/>
+<text x="802.0" y="515.0" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >85</text>
+<rect x="782" y="622.0" width="40" height="60.0" rx="3" fill="#8d5fd3"/>
+<text x="802.0" y="617.0" font-size="13" font-weight="700" fill="#8d5fd3" text-anchor="middle" >4</text>
+<text x="802.0" y="700" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2018</text>
+<text x="866.0" y="575" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >0</text>
+<text x="866.0" y="677" font-size="13" font-weight="700" fill="#8d5fd3" text-anchor="middle" >0</text>
+<text x="866.0" y="700" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2019</text>
+<rect x="910" y="572.9411764705883" width="40" height="7.0588235294117645" rx="3" fill="#aab3be"/>
+<text x="930.0" y="567.9411764705883" font-size="12" font-weight="600" fill="#5f6b7a" text-anchor="middle" >10</text>
+<rect x="910" y="652.0" width="40" height="30.0" rx="3" fill="#8d5fd3"/>
+<text x="930.0" y="647.0" font-size="13" font-weight="700" fill="#8d5fd3" text-anchor="middle" >2</text>
+<text x="930.0" y="700" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >2020</text>
+<line x1="774" y1="580" x2="958" y2="580" stroke="#d0d7de"/>
+<line x1="774" y1="682" x2="958" y2="682" stroke="#d0d7de"/>
+<text x="830.0" y="446" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >Information made available</text>
+<text x="830.0" y="462" font-size="12" font-weight="400" fill="#5f6b7a" text-anchor="middle" >by the datasets of each year</text>
+<text x="830.0" y="730" font-size="11" font-weight="400" fill="#5f6b7a" text-anchor="middle" >No datasets in 2019: no new information</text>
+<rect x="30" y="760" width="940" height="38" rx="8" fill="#1f2933"/>
+<text x="48" y="784" font-size="13" font-weight="400" fill="#e6e9ee" text-anchor="start" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">con |> add_dataset_info()</text>
+<text x="320" y="784" font-size="13" font-weight="400" fill="#e6e9ee" text-anchor="start" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">statement |> set_grid("h3", 4) |> publication_information()</text>
+</svg>

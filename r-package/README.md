@@ -89,7 +89,14 @@ cell_to_polygon(cells, statement) |> plot()
 
 The publication and year information metrics count unique combinations of cell,
 year and taxon (by default phylum; change it with `set_taxonomic_level()`) instead of
-records, so intensively sampled places do not dominate the result:
+records, so intensively sampled places do not dominate the result. The figure below shows how:
+
+![How the information metric works](../docs/information-metric.svg)
+
+For `publication_information()`, the combinations also include the observation year
+and are counted in the year each dataset was published:
+
+![How the publication information metric works](../docs/publication-information.svg)
 
 ```r
 con |> add_dataset_info()
@@ -130,8 +137,11 @@ records_by_year(statement)
 
 The grid, `set_taxonomic_level()` and `set_depth_bands()` can still be changed
 afterwards. If the area, period, depth or filters are changed, the analyses warn and use
-the full dataset again. The table is named `obis_computed` by default; use `table =` to
-keep several at once (see the [example](../dev/example-r/example-eov-med.R)).
+the full dataset again. The table is named `obis_computed` by default (`run_analyses()` uses it too, and the
+next call replaces it); use `table =` to keep the records of several queries at once.
+
+For a longer example with three groups of taxa, run with `run_analyses()`, see
+[`dev/example-r/example-eov-med.R`](../dev/example-r/example-eov-med.R).
 
 ### Export for a dashboard: `export_cube()`
 

@@ -38,6 +38,12 @@ pre-computed first (see \code{\link[=pre_compute]{pre_compute()}}), so the full 
 once. To change the arguments of an analysis (e.g. \code{by_cell}), call its
 function directly.
 }
+\details{
+The pre-computed records are saved in the table \code{obis_computed} of the
+connection, which the next call replaces. Use the query kept in the result
+(see below) before running another query on the same connection, or pre-compute
+each query into its own table with \code{\link[=pre_compute]{pre_compute()}}.
+}
 \examples{
 \dontrun{
 results <- con |>

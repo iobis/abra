@@ -17,7 +17,7 @@ OBIS open data ──► abra (R package) ──► prepare-data.R ──► Par
 | [`r-package/`](r-package/) | The `abra` R package: chain `set_area()`, `set_period()`, `set_depth()`, `set_filters()` and `set_grid()` onto a `robisdb` connection, then run analyses (`basic_stats()`, `records_by_year()`, `publication_information()`, ...). See [`r-package/README.md`](r-package/README.md). |
 | [`dashboard/`](dashboard/) | A static web dashboard (SvelteKit) with the results of **one analysis for one area**. No server needed: it can be hosted for free on GitHub Pages. Includes `prepare-data.R`, the script that runs the analysis. See [`dashboard/README.md`](dashboard/README.md). |
 | [`quarto/`](quarto/) | A [Quarto](https://quarto.org) document that renders the same results as a PDF report. See [`quarto/README.md`](quarto/README.md). |
-| [`dev/`](dev/) | Exploratory scripts and examples (e.g. [`dev/example-r/`](dev/example-r/)); not part of the package. |
+| [`dev/`](dev/) | Exploratory scripts and examples; not part of the package. [`dev/example-r/`](dev/example-r/) is an analysis in R; [`dev/full-example/`](dev/full-example/) takes it all the way to a dashboard and a report for three groups of taxa. |
 | [`python-package/`](python-package/) | A Python package, planned but not started. |
 
 ## Requirements
@@ -57,6 +57,24 @@ result$basic_stats
 See [`r-package/README.md`](r-package/README.md) for all the setters and analyses.
 For a longer example, with several groups of taxa in the Mediterranean Sea, see
 [`dev/example-r/example-eov-med.R`](dev/example-r/example-eov-med.R).
+
+## The information metric
+
+The *year information* (`year_information()`) and *publication information*
+(`publication_information()`) metrics measure how much is known about an area, not
+how many records were collected. They count the **unique combinations of grid cell
+and taxon** (by default phylum; see `set_taxonomic_level()`) per year, so a place
+sampled thousands of times for the same group counts once. The first groups them by
+the year of observation; the second by the year the dataset was published.
+
+![How the information metric works: records are reduced to unique cell and taxon combinations, which are counted per year](docs/information-metric.svg)
+
+The publication version needs the date each dataset was published (see
+`add_dataset_info()`). It pools the datasets published in the same year and counts
+the unique combinations of cell, taxon and **observation year** among them, so it
+shows how much new information the community made available each year:
+
+![How the publication information metric works: datasets are pooled by publication year, each combination of cell, taxon and observation year is kept once, and the combinations are counted per publication year](docs/publication-information.svg)
 
 ## Make a dashboard and a report
 
